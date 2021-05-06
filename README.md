@@ -1,1 +1,1 @@
-# trading_backend
+# Backend Application for Trading Company
