@@ -1,39 +1,30 @@
 package com.example.trading_backend.config;
-
-
-import com.example.trading_backend.model.Customer;
-import com.example.trading_backend.service.CustomerService;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.Properties;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+
 @Configuration
+@ComponentScan(basePackages = "com.example.trading_backend")
+@EnableJpaRepositories(basePackages = {"com.example.trading_backend.repository"})
 @EnableTransactionManagement
 @EnableWebMvc
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class AppConfig {
-
-    @Bean
-    public Customer customer(){
-        return new Customer();
-    }
-
-    @Bean
-    public CustomerService customerService(){
-        return new CustomerService();
-    }
-
-    @Bean
+    @Bean(name = "entityManagerFactory")
     public LocalSessionFactoryBean sessionFactory(){
 
         // config Hibernate properties
@@ -47,8 +38,8 @@ public class AppConfig {
 
         // mapping all entities to the DB
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
-
         sessionFactoryBean.setPackagesToScan("com.example.trading_backend.model");
+
         // config data source
         // including database info
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -73,7 +64,15 @@ public class AppConfig {
     @Bean
     public HibernateTransactionManager transactionManager(SessionFactory sessionFactory){
         HibernateTransactionManager tx = new HibernateTransactionManager(sessionFactory);
-
         return tx;
     }
+
+    // JPA repo config
+//    @Bean
+//    JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+//        JpaTransactionManager transactionManager = new JpaTransactionManager();
+//        transactionManager.setEntityManagerFactory(entityManagerFactory);
+//        return transactionManager;
+//    }
+
 }

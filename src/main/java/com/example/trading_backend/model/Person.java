@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @MappedSuperclass
-public class Person {
+public abstract class Person {
 
     @Id
     @Column
