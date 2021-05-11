@@ -1,14 +1,14 @@
 package com.example.trading_backend.model;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Entity
-@Table(name = "PERSON")
+@MappedSuperclass
 public class Person {
 
     @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column
@@ -25,6 +25,10 @@ public class Person {
 
     @Column
     private String fax;
+
+    public Person() {
+
+    }
 
     public int getId() {
         return id;

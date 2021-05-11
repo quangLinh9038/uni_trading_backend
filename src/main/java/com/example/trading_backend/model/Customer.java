@@ -6,26 +6,18 @@ import javax.persistence.*;
 @Table(name = "CUSTOMER")
 public class Customer extends Person{
 
-    @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    private String contact_person;
 
-    @Column
-    private String name;
+    public Customer() {
+    }
 
-    @Column
-    private String phone;
+    public String getContact_person() {
+        return contact_person;
+    }
 
-    @Column
-    private String address;
-
-    @Column
-    private String email;
-
-    @Column
-    private String fax;
-
-    @ManyToOne
-    private Person person;
+    public void setContact_person(String contact_person) {
+        this.contact_person = contact_person;
+    }
 }
+
