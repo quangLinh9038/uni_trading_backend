@@ -19,11 +19,13 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan(basePackages = "com.example.trading_backend")
-@EnableJpaRepositories(basePackages = {"com.example.trading_backend.repository"})
+@EnableJpaRepositories(basePackages = "com.example.trading_backend.repository")
 @EnableTransactionManagement
 @EnableWebMvc
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+
 public class AppConfig {
+
     @Bean(name = "entityManagerFactory")
     public LocalSessionFactoryBean sessionFactory(){
 
@@ -34,7 +36,8 @@ public class AppConfig {
         // define type of database - PostgresSQL
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.put("hibernate.show_sql", true);
-        properties.put("hibernate.hbm2ddl.auto", "create-drop"); //update
+//        properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("hibernate.hbm2ddl.auto", "create-drop");
 
         // mapping all entities to the DB
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
@@ -66,13 +69,5 @@ public class AppConfig {
         HibernateTransactionManager tx = new HibernateTransactionManager(sessionFactory);
         return tx;
     }
-
-    // JPA repo config
-//    @Bean
-//    JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-//        JpaTransactionManager transactionManager = new JpaTransactionManager();
-//        transactionManager.setEntityManagerFactory(entityManagerFactory);
-//        return transactionManager;
-//    }
 
 }

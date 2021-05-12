@@ -1,4 +1,4 @@
-package com.example.trading_backend.model;
+package com.example.trading_backend.model.actor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -7,8 +7,7 @@ import java.util.List;
 public abstract class Person {
 
     @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column

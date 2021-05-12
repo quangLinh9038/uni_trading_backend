@@ -1,4 +1,4 @@
-package com.example.trading_backend.model;
+package com.example.trading_backend.model.actor;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
