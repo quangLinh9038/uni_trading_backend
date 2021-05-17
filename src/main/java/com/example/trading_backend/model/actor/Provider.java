@@ -1,37 +1,45 @@
 package com.example.trading_backend.model.actor;
 
-import com.example.trading_backend.model.Product;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.trading_backend.model.ordering.Ordering;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "PROVIDER")
+@Table(name = "provider")
 public class Provider extends Person {
 
     @Column
-    private String representative;
+    private String contact_person;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Product> products;
+    @OneToMany(mappedBy = "provider", fetch = FetchType.EAGER)
+    private List<Ordering> orderingList;
 
-    public Provider(){
+
+    public Provider() {
     }
 
     public String getRepresentative() {
-        return representative;
+        return contact_person;
     }
 
     public void setRepresentative(String representative) {
-        this.representative = representative;
+        this.contact_person = representative;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public String getContact_person() {
+        return contact_person;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setContact_person(String contact_person) {
+        this.contact_person = contact_person;
+    }
+
+    public List<Ordering> getOrderList() {
+        return orderingList;
+    }
+
+    public void setOrderList(List<Ordering> orderingList) {
+        this.orderingList = orderingList;
     }
 }

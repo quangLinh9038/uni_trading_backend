@@ -1,4 +1,5 @@
 package com.example.trading_backend.config;
+
 import org.hibernate.SessionFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -9,11 +10,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import javax.persistence.EntityManagerFactory;
 import java.util.Properties;
 
 
@@ -27,7 +26,7 @@ import java.util.Properties;
 public class AppConfig {
 
     @Bean(name = "entityManagerFactory")
-    public LocalSessionFactoryBean sessionFactory(){
+    public LocalSessionFactoryBean sessionFactory() {
 
         // config Hibernate properties
         Properties properties = new Properties();
@@ -36,8 +35,7 @@ public class AppConfig {
         // define type of database - PostgresSQL
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.put("hibernate.show_sql", true);
-//        properties.put("hibernate.hbm2ddl.auto", "update");
-        properties.put("hibernate.hbm2ddl.auto", "create-drop");
+        properties.put("hibernate.hbm2ddl.auto", "update");
 
         // mapping all entities to the DB
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
@@ -48,7 +46,7 @@ public class AppConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
 
-        // deployed db on heroku
+//         deployed db on heroku
 //        dataSource.setUrl("jdbc:postgresql://ec2-23-22-191-232.compute-1.amazonaws.com:5432/da3sn46lth1jcq");
 //        dataSource.setUsername("qylqqdeyjgfxkb");
 //        dataSource.setPassword("e2fc64d428e51ab71ac0eb060598bb0470c0d3d0bff25ac9dfecc74fd732996e");
@@ -65,7 +63,7 @@ public class AppConfig {
     }
 
     @Bean
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory){
+    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
         HibernateTransactionManager tx = new HibernateTransactionManager(sessionFactory);
         return tx;
     }

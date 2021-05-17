@@ -1,11 +1,8 @@
 package com.example.trading_backend.controller;
 
-import com.example.trading_backend.model.Category;
-import com.example.trading_backend.model.Product;
-import com.example.trading_backend.model.actor.Customer;
-import com.example.trading_backend.model.actor.Provider;
+import com.example.trading_backend.model.product.Category;
+import com.example.trading_backend.model.product.Product;
 import com.example.trading_backend.repository.ProductRepository;
-import org.apache.catalina.valves.rewrite.RewriteCond;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +15,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class ProductController {
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -69,15 +67,15 @@ public class ProductController {
     }
 
     //Get products by provider
-    @GetMapping("/productByProvider/{provider}")
-    public ResponseEntity<Product> getProductByProvider(@PathVariable("provider") Provider provider) {
-        try {
-            Optional<Product> product = productRepository.findProductsByProvider(provider);
-            return product.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @GetMapping("/productByProvider/{provider}")
+//    public ResponseEntity<Product> getProductByProvider(@PathVariable("provider") Provider provider) {
+//        try {
+//            Optional<Product> product = productRepository.findProductsByProvider(provider);
+//            return product.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     //Post new product
     @PostMapping("/products")
@@ -133,7 +131,7 @@ public class ProductController {
             _product.setPrice(_product.getPrice());
             _product.setDescriptions(_product.getDescriptions());
             _product.setCompany(_product.getCompany());
-            _product.setProvider(_product.getProvider());
+//            _product.setProvider(_product.getProvider());
             _product.setCategory(_product.getCategory());
 
 
@@ -143,7 +141,6 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 
 
 }

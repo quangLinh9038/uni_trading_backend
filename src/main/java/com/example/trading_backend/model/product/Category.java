@@ -1,23 +1,24 @@
-package com.example.trading_backend.model;
+package com.example.trading_backend.model.product;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "CATEGORY")
+@Table(name = "category")
 public class Category {
 
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     private List<Product> products;
 
-    public Category(){
+    public Category() {
     }
 
     public int getId() {

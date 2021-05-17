@@ -1,12 +1,12 @@
 package com.example.trading_backend.model.actor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @MappedSuperclass
 public abstract class Person {
 
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
