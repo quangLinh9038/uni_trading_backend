@@ -54,7 +54,7 @@ public class AppConfig {
         // local datasource
 //        dataSource.setUrl("jdbc:postgresql://localhost:5432/trading_company");
 //        dataSource.setUsername("postgres");
-//        dataSource.setPassword("124569");
+//        dataSource.setPassword("3007");
 
         sessionFactoryBean.setDataSource(dataSource);
         sessionFactoryBean.setHibernateProperties(properties);

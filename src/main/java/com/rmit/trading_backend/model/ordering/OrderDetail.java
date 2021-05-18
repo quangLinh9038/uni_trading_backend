@@ -1,5 +1,6 @@
 package com.rmit.trading_backend.model.ordering;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.product.Product;
 
 import javax.persistence.*;
@@ -19,10 +20,12 @@ public class OrderDetail {
     private long price;
 
     @ManyToOne
+    @JsonIgnore
     private Ordering ordering;
 
-    @ManyToOne
-    private Product product;
+//    @ManyToOne
+//    @JsonIgnore
+//    private Product product;
 
 
     public OrderDetail() {
@@ -44,13 +47,13 @@ public class OrderDetail {
         this.ordering = ordering;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
+//    public Product getProduct() {
+//        return product;
+//    }
+//
+//    public void setProduct(Product product) {
+//        this.product = product;
+//    }
 
     public int getQuanity() {
         return quantity;

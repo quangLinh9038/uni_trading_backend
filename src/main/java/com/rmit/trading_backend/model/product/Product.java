@@ -1,10 +1,7 @@
 package com.rmit.trading_backend.model.product;
 
-import com.rmit.trading_backend.model.ordering.OrderDetail;
-import com.rmit.trading_backend.model.sale.SaleDetail;
-
 import javax.persistence.*;
-import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "product")
@@ -36,11 +33,11 @@ public class Product {
     @ManyToOne
     private Category category;
 
-    @OneToMany(mappedBy = "product")
-    private List<OrderDetail> orderDetailList;
-
-    @OneToMany(mappedBy = "product")
-    private List<SaleDetail> saleDetailList;
+//    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+//    private List<OrderDetail> orderDetailList;
+//
+//    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+//    private List<SaleDetail> saleDetailList;
 
     public Product() {
     }
@@ -109,19 +106,19 @@ public class Product {
         this.category = category;
     }
 
-    public List<OrderDetail> getOrderDetailList() {
-        return orderDetailList;
-    }
-
-    public void setOrderDetailList(List<OrderDetail> orderDetailList) {
-        this.orderDetailList = orderDetailList;
-    }
-
-    public List<SaleDetail> getSaleDetailList() {
-        return saleDetailList;
-    }
-
-    public void setSaleDetailList(List<SaleDetail> saleDetailList) {
-        this.saleDetailList = saleDetailList;
-    }
+//    public List<OrderDetail> getOrderDetailList() {
+//        return orderDetailList;
+//    }
+//
+//    public void setOrderDetailList(List<OrderDetail> orderDetailList) {
+//        this.orderDetailList = orderDetailList;
+//    }
+//
+//    public List<SaleDetail> getSaleDetailList() {
+//        return saleDetailList;
+//    }
+//
+//    public void setSaleDetailList(List<SaleDetail> saleDetailList) {
+//        this.saleDetailList = saleDetailList;
+//    }
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:9090")
 @RestController
 @RequestMapping("/api")
 public class CategoryController {
@@ -19,7 +19,7 @@ public class CategoryController {
     private CategoryRepository categoryRepository;
 
     //Get all categories
-    @GetMapping("/ordering")
+    @GetMapping("/category")
     public ResponseEntity<List<Category>> getAllCategory() {
         try {
             if (categoryRepository.findAll().isEmpty()) {
@@ -32,7 +32,7 @@ public class CategoryController {
     }
 
     //Post new category
-    @PostMapping("/category")
+    @PostMapping("/categories")
     public ResponseEntity<List<Category>> addCategory(@RequestBody List<Category> categories) {
         try {
             List<Category> categoryList = categoryRepository.saveAll(categories);

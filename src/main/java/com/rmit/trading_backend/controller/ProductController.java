@@ -2,16 +2,19 @@ package com.rmit.trading_backend.controller;
 
 import com.rmit.trading_backend.model.product.Category;
 import com.rmit.trading_backend.model.product.Product;
+import com.rmit.trading_backend.repository.CategoryRepository;
 import com.rmit.trading_backend.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.client.ResourceAccessException;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:9090")
 @RestController
 @RequestMapping("/api")
 public class ProductController {
@@ -19,6 +22,8 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
     //Get all products
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getAllProduct() {
@@ -66,28 +71,49 @@ public class ProductController {
         }
     }
 
-    //Get products by provider
-//    @GetMapping("/productByProvider/{provider}")
-//    public ResponseEntity<Product> getProductByProvider(@PathVariable("provider") Provider provider) {
+
+    //Post new product
+//    @PostMapping("/products")
+//    public ResponseEntity<List<Product>> addProduct(@RequestBody List<Product> products) {
 //        try {
-//            Optional<Product> product = productRepository.findProductsByProvider(provider);
-//            return product.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+//            for (Product product: products){
+//                product.setCategory(categoryRepository.findById(product.getCategory().getId()));
+//            }
+//            List<Product> productList = productRepository.saveAll(products);
+//            return new ResponseEntity<>(productList, HttpStatus.CREATED);
 //        } catch (Exception e) {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
 //    }
 
-    //Post new product
     @PostMapping("/products")
-    public ResponseEntity<List<Product>> addProduct(@RequestBody List<Product> products) {
+    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
         try {
-            List<Product> productList = productRepository.saveAll(products);
-            return new ResponseEntity<>(productList, HttpStatus.CREATED);
+            Category category = categoryRepository.findById(product.getCategory().getId());
+            if(category != null){
+                product.setCategory(category);
+                productRepository.save(product);
+                return new ResponseEntity<>(product, HttpStatus.CREATED);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    @PostMapping("/{cateId}/products")
+    public ResponseEntity<Product> addProduct(@PathVariable(value = "cateId") int cateId, @RequestBody Product product) {
+        try {
+            Category category = categoryRepository.findById(cateId);
+            if(category != null){
+                product.setCategory(category);
+                productRepository.save(product);
+            }
+            return new ResponseEntity<>(product, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     // DELETE ONE
     @DeleteMapping("/products/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable("id") int id) {
