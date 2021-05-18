@@ -45,6 +45,5 @@ public class Category {
         this.products = products;
     }
 
-    public static class ReceivingNote {
-    }
+
 }
