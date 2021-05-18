@@ -47,14 +47,14 @@ public class AppConfig {
         dataSource.setDriverClassName("org.postgresql.Driver");
 
 //         deployed db on heroku
-//        dataSource.setUrl("jdbc:postgresql://ec2-23-22-191-232.compute-1.amazonaws.com:5432/da3sn46lth1jcq");
-//        dataSource.setUsername("qylqqdeyjgfxkb");
-//        dataSource.setPassword("e2fc64d428e51ab71ac0eb060598bb0470c0d3d0bff25ac9dfecc74fd732996e");
+        dataSource.setUrl("jdbc:postgresql://ec2-23-22-191-232.compute-1.amazonaws.com:5432/da3sn46lth1jcq");
+        dataSource.setUsername("qylqqdeyjgfxkb");
+        dataSource.setPassword("e2fc64d428e51ab71ac0eb060598bb0470c0d3d0bff25ac9dfecc74fd732996e");
 
         // local datasource
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/trading_company");
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("124569");
+//        dataSource.setUrl("jdbc:postgresql://localhost:5432/trading_company");
+//        dataSource.setUsername("postgres");
+//        dataSource.setPassword("124569");
 
         sessionFactoryBean.setDataSource(dataSource);
         sessionFactoryBean.setHibernateProperties(properties);
