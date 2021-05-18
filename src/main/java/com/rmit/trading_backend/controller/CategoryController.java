@@ -13,13 +13,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class CategoryController {
-    //TODO:
-    // Category CRUD
+
     @Autowired
     private CategoryRepository categoryRepository;
 
     //Get all categories
-    @GetMapping("/category")
+    @GetMapping("/categories")
     public ResponseEntity<List<Category>> getAllCategory() {
         try {
             if (categoryRepository.findAll().isEmpty()) {

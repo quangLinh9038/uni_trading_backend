@@ -24,6 +24,8 @@ public class ProductController {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+
     //Get all products
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getAllProduct() {
@@ -72,48 +74,44 @@ public class ProductController {
     }
 
 
-    //Post new product
-//    @PostMapping("/products")
-//    public ResponseEntity<List<Product>> addProduct(@RequestBody List<Product> products) {
+    // POST list of products
+    @PostMapping("/products")
+    public ResponseEntity<List<Product>> addList(@RequestBody List<Product> products) {
+        try {
+            // for each product object in the list
+            for (Product product: products){
+
+                // assign suitable cate
+                Category category = categoryRepository.findById(product.getCategory().getId());
+
+                product.setCategory(category);
+
+                productRepository.saveAll(products);
+
+                return new ResponseEntity<>(HttpStatus.CREATED);
+            }
+            return new ResponseEntity<>(products, HttpStatus.NOT_FOUND);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+//    @PostMapping("/{cateId}/products")
+//    public ResponseEntity<Product> addProduct(@PathVariable(value = "cateId") int cateId, @RequestBody Product product) {
 //        try {
-//            for (Product product: products){
-//                product.setCategory(categoryRepository.findById(product.getCategory().getId()));
+//            Category category = categoryRepository.findById(cateId);
+//            if(category != null){
+//                product.setCategory(category);
+//                productRepository.save(product);
 //            }
-//            List<Product> productList = productRepository.saveAll(products);
-//            return new ResponseEntity<>(productList, HttpStatus.CREATED);
+//            return new ResponseEntity<>(product, HttpStatus.CREATED);
 //        } catch (Exception e) {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
 //    }
 
-    @PostMapping("/products")
-    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-        try {
-            Category category = categoryRepository.findById(product.getCategory().getId());
-            if(category != null){
-                product.setCategory(category);
-                productRepository.save(product);
-                return new ResponseEntity<>(product, HttpStatus.CREATED);
-            }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("/{cateId}/products")
-    public ResponseEntity<Product> addProduct(@PathVariable(value = "cateId") int cateId, @RequestBody Product product) {
-        try {
-            Category category = categoryRepository.findById(cateId);
-            if(category != null){
-                product.setCategory(category);
-                productRepository.save(product);
-            }
-            return new ResponseEntity<>(product, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
     // DELETE ONE
     @DeleteMapping("/products/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable("id") int id) {
