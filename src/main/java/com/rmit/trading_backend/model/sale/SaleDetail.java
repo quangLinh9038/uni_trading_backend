@@ -24,7 +24,8 @@ public class SaleDetail {
     @ManyToOne
     private SaleInvoice saleInvoice;
 
-    public SaleDetail(){}
+    public SaleDetail() {
+    }
 
     public long getId() {
         return id;
