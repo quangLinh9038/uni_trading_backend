@@ -15,11 +15,10 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class CustomerController {
 
-
     @Autowired
     private CustomerRepository customerRepository;
 
-    // get all customers
+    // GET ALL CUSTOMERS
     @GetMapping(value = {"/", "customers"})
     public ResponseEntity<List<Customer>> getAllCustomers() {
         try {
@@ -33,15 +32,42 @@ public class CustomerController {
         }
     }
 
-    //TODO: Customers can be searched by name, address, phone.
-
-    // GET ONE BY NAME
+    // GET CUSTOMERS BY NAME
     @GetMapping("/customerByName/{name}")
-    public ResponseEntity<Customer> getCustomerByName(@PathVariable("name") String name) {
+    public ResponseEntity<List<Customer>> getCustomerByName(@PathVariable("name") String name) {
         try {
-            Optional<Customer> customer = customerRepository.findCustomerByNameContaining(name);
-            return customer.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            if (customerRepository.findCustomerByNameContaining(name).isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(customerRepository.findCustomerByNameContaining(name), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("error");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
+    // GET CUSTOMER BY ADDRESS
+    @GetMapping("/customerByAddress/{address}")
+    public ResponseEntity<List<Customer>> getCustomerByAddress(@PathVariable("address") String address) {
+        try {
+            if (customerRepository.findCustomerByAddressContaining(address).isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(customerRepository.findCustomerByAddressContaining(address), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("error");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // GET CUSTOMER BY PHONE
+    @GetMapping("/customerByPhone/{phone}")
+    public ResponseEntity<List<Customer>> getCustomerByPhone(@PathVariable("phone") String phone) {
+        try {
+            if (customerRepository.findCustomerByPhoneContaining(phone).isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(customerRepository.findCustomerByPhoneContaining(phone), HttpStatus.OK);
         } catch (Exception e) {
             System.out.println("error");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

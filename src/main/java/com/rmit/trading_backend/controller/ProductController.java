@@ -6,12 +6,10 @@ import com.rmit.trading_backend.repository.CategoryRepository;
 import com.rmit.trading_backend.repository.ProductRepository;
 import com.rmit.trading_backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.ResourceAccessException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +28,7 @@ public class ProductController {
     private CategoryRepository categoryRepository;
 
 
-    //Get all products
+    //GET ALL PRODUCTS
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getAllProduct() {
         try {
@@ -44,34 +42,52 @@ public class ProductController {
         }
     }
 
-    //Get one by name
+    //GET PRODUCT BY NAME
     @GetMapping("/productByName/{name}")
-    public ResponseEntity<Product> getProductByName(@PathVariable("name") String name) {
+    public ResponseEntity<List<Product>> getProductByName(@PathVariable("name") String name) {
         try {
-            Optional<Product> product = productRepository.findProductByNameContaining(name);
-            return product.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            if (productRepository.findProductByNameContaining(name).isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(productRepository.findProductByNameContaining(name), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    //Get products by brand
+    //GET PRODUCT BY BRAND
     @GetMapping("/productByBrand/{brand}")
-    public ResponseEntity<Product> getProductByBrand(@PathVariable("brand") String brand) {
+    public ResponseEntity<List<Product>> getProductByBrand(@PathVariable("brand") String brand) {
         try {
-            Optional<Product> product = productRepository.findProductsByBrandContaining(brand);
-            return product.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            if (productRepository.findProductsByBrandContaining(brand).isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(productRepository.findProductsByBrandContaining(brand), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    //Get products by category
-    @GetMapping("/productByCategory/{category}")
-    public ResponseEntity<Product> getProductByCategory(@PathVariable("category") Category category) {
+    //GET PRODUCT BY CATEGORY ID
+    @GetMapping("/productByCategoryId/{id}")
+    public ResponseEntity<List<Product>> getProductByCategory(@PathVariable(value = "id") int categoryID) {
         try {
-            Optional<Product> product = productRepository.findProductsByCategory(category);
-            return product.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            if (productRepository.findAllProductByCategoryId(categoryID).isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(productRepository.findAllProductByCategoryId(categoryID), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //GET PRODUCT BY CATEGORY NAME
+    @GetMapping("/productByCategoryName/{name}")
+    public ResponseEntity<List<Product>> getProductByCategory(@PathVariable(value = "name") String categoryName) {
+        try {
+            if (productRepository.findAllProductByCategoryName(categoryName).isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(productRepository.findAllProductByCategoryName(categoryName), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -91,21 +107,6 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-//    @PostMapping("/{cateId}/products")
-//    public ResponseEntity<Product> addProduct(@PathVariable(value = "cateId") int cateId, @RequestBody Product product) {
-//        try {
-//            Category category = categoryRepository.findById(cateId);
-//            if(category != null){
-//                product.setCategory(category);
-//                productRepository.save(product);
-//            }
-//            return new ResponseEntity<>(product, HttpStatus.CREATED);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
 
     // DELETE ONE
     @DeleteMapping("/products/{id}")
