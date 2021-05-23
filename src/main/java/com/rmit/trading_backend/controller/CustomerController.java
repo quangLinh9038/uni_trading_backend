@@ -15,13 +15,10 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class CustomerController {
 
-//    @Autowired
-//    private CustomerService customerService;
-
     @Autowired
     private CustomerRepository customerRepository;
 
-    // get all customers
+    // GET ALL CUSTOMERS
     @GetMapping(value = {"/", "customers"})
     public ResponseEntity<List<Customer>> getAllCustomers() {
         try {
@@ -35,11 +32,37 @@ public class CustomerController {
         }
     }
 
-    // GET ONE BY NAME
+    // GET CUSTOMER BY NAME
     @GetMapping("/customerByName/{name}")
     public ResponseEntity<Customer> getCustomerByName(@PathVariable("name") String name) {
         try {
             Optional<Customer> customer = customerRepository.findCustomerByNameContaining(name);
+            return customer.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        } catch (Exception e) {
+            System.out.println("error");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // GET CUSTOMER BY ADDRESS
+    @GetMapping("/customerByAddress/{address}")
+    public ResponseEntity<Customer> getCustomerByAddress(@PathVariable("address") String address) {
+        try {
+            Optional<Customer> customer = customerRepository.findCustomerByAddressContaining(address);
+            return customer.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        } catch (Exception e) {
+            System.out.println("error");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // GET CUSTOMER BY PHONE
+    @GetMapping("/customerByPhone/{phone}")
+    public ResponseEntity<Customer> getCustomerByPhone(@PathVariable("phone") String phone) {
+        try {
+            Optional<Customer> customer = customerRepository.findCustomerByPhoneContaining(phone);
             return customer.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
         } catch (Exception e) {
