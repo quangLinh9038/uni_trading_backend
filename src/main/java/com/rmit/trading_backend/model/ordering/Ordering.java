@@ -1,11 +1,12 @@
 package com.rmit.trading_backend.model.ordering;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.actor.Provider;
 import com.rmit.trading_backend.model.actor.Staff;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,18 +19,21 @@ public class Ordering {
     private long id;
 
     @Column
-    private LocalDate orderedDate;
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private Date orderedDate;
 
+    // mapping to Provider
     @ManyToOne
-    @JsonIgnore
     private Provider provider;
 
+    // mapping to Staff
     @ManyToOne
-    @JsonIgnore
     private Staff staff;
 
-    @OneToMany(mappedBy = "ordering", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "ordering", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<OrderDetail> orderDetailList;
+
 
     public Ordering() {
     }
@@ -42,11 +46,11 @@ public class Ordering {
         this.id = id;
     }
 
-    public LocalDate getOrderedDate() {
+    public Date getOrderedDate() {
         return orderedDate;
     }
 
-    public void setOrderedDate(LocalDate orderedDate) {
+    public void setOrderedDate(Date orderedDate) {
         this.orderedDate = orderedDate;
     }
 

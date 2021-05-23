@@ -15,8 +15,6 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class CustomerController {
 
-//    @Autowired
-//    private CustomerService customerService;
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -34,6 +32,8 @@ public class CustomerController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    //TODO: Customers can be searched by name, address, phone.
 
     // GET ONE BY NAME
     @GetMapping("/customerByName/{name}")
