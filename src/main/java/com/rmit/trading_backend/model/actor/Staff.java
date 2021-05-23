@@ -1,12 +1,16 @@
 package com.rmit.trading_backend.model.actor;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.ordering.Ordering;
 import com.rmit.trading_backend.model.sale.SaleInvoice;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,13 +19,20 @@ public class Staff extends Person {
 
     private String company;
 
+
+    // fetching staff with 2 collection will throw MultipleBagFetchException in fetchType.Eager
+    // using @LazyCollection instead of
+
     // one staff can make many orders
-    @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY)
-    private List<Ordering> orderingList;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "staff")
+    private List<Ordering> orderingList = new ArrayList<>();
 
     // one staff can make many sale invoices
-    @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY)
-    private List<SaleInvoice> saleInvoiceList;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "staff")
+
+    private List<SaleInvoice> saleInvoiceList = new ArrayList<>();
 
     public Staff() {
     }
@@ -32,14 +43,6 @@ public class Staff extends Person {
 
     public void setCompany(String company) {
         this.company = company;
-    }
-
-    public List<Ordering> getOrderList() {
-        return orderingList;
-    }
-
-    public void setOrderList(List<Ordering> orderingList) {
-        this.orderingList = orderingList;
     }
 
     public List<Ordering> getOrderingList() {

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.product.Product;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class OrderDetail {
@@ -20,13 +22,10 @@ public class OrderDetail {
     private long price;
 
     @ManyToOne
-    @JsonIgnore
     private Ordering ordering;
 
-//    @ManyToOne
-//    @JsonIgnore
-//    private Product product;
-
+    @OneToMany(mappedBy = "orderDetail", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Product> productList = new ArrayList<>();
 
     public OrderDetail() {
     }
@@ -39,28 +38,12 @@ public class OrderDetail {
         this.id = id;
     }
 
-    public Ordering getOrder() {
-        return ordering;
-    }
-
-    public void setOrder(Ordering ordering) {
-        this.ordering = ordering;
-    }
-
-//    public Product getProduct() {
-//        return product;
-//    }
-//
-//    public void setProduct(Product product) {
-//        this.product = product;
-//    }
-
-    public int getQuanity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuanity(int quanity) {
-        this.quantity = quanity;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public long getPrice() {
@@ -69,5 +52,21 @@ public class OrderDetail {
 
     public void setPrice(long price) {
         this.price = price;
+    }
+
+    public Ordering getOrdering() {
+        return ordering;
+    }
+
+    public void setOrdering(Ordering ordering) {
+        this.ordering = ordering;
+    }
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
     }
 }

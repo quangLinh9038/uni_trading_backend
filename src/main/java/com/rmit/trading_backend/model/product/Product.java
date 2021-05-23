@@ -1,7 +1,9 @@
 package com.rmit.trading_backend.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rmit.trading_backend.model.ordering.OrderDetail;
+
 import javax.persistence.*;
-import java.util.Optional;
 
 @Entity
 @Table(name = "product")
@@ -33,9 +35,12 @@ public class Product {
     @ManyToOne
     private Category category;
 
-//    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
-//    private List<OrderDetail> orderDetailList;
-//
+    @ManyToOne
+    @JsonIgnore
+    private OrderDetail orderDetail;
+
+
+    // mapping product info to Sale Invoice
 //    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
 //    private List<SaleDetail> saleDetailList;
 
@@ -106,14 +111,15 @@ public class Product {
         this.category = category;
     }
 
-//    public List<OrderDetail> getOrderDetailList() {
-//        return orderDetailList;
-//    }
-//
-//    public void setOrderDetailList(List<OrderDetail> orderDetailList) {
-//        this.orderDetailList = orderDetailList;
-//    }
-//
+    public OrderDetail getOrderDetail() {
+        return orderDetail;
+    }
+
+    public void setOrderDetail(OrderDetail orderDetail) {
+        this.orderDetail = orderDetail;
+    }
+
+    //
 //    public List<SaleDetail> getSaleDetailList() {
 //        return saleDetailList;
 //    }

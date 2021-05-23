@@ -4,6 +4,7 @@ import com.rmit.trading_backend.model.product.Category;
 import com.rmit.trading_backend.model.product.Product;
 import com.rmit.trading_backend.repository.CategoryRepository;
 import com.rmit.trading_backend.repository.ProductRepository;
+import com.rmit.trading_backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class ProductController {
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private ProductRepository productRepository;
@@ -94,21 +98,12 @@ public class ProductController {
     @PostMapping("/products")
     public ResponseEntity<List<Product>> addList(@RequestBody List<Product> products) {
         try {
-            // for each product object in the list
-            for (Product product: products){
-
-                // assign suitable cate
-                Category category = categoryRepository.findById(product.getCategory().getId());
-
-                product.setCategory(category);
-
-                productRepository.saveAll(products);
-
-                return new ResponseEntity<>(HttpStatus.CREATED);
+            if(productService.addProduct(products)){
+                return new ResponseEntity<>(products,HttpStatus.CREATED);
             }
-            return new ResponseEntity<>(products, HttpStatus.NOT_FOUND);
-
-        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -156,7 +151,6 @@ public class ProductController {
             _product.setPrice(_product.getPrice());
             _product.setDescriptions(_product.getDescriptions());
             _product.setCompany(_product.getCompany());
-//            _product.setProvider(_product.getProvider());
             _product.setCategory(_product.getCategory());
 
 

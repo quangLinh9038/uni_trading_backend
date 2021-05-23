@@ -1,8 +1,10 @@
 package com.rmit.trading_backend.model.actor;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.ordering.Ordering;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,18 +15,10 @@ public class Provider extends Person {
     private String contact_person;
 
     @OneToMany(mappedBy = "provider", fetch = FetchType.EAGER)
-    private List<Ordering> orderingList;
+    private List<Ordering> orderingList = new ArrayList<>();
 
 
     public Provider() {
-    }
-
-    public String getRepresentative() {
-        return contact_person;
-    }
-
-    public void setRepresentative(String representative) {
-        this.contact_person = representative;
     }
 
     public String getContact_person() {
@@ -35,6 +29,7 @@ public class Provider extends Person {
         this.contact_person = contact_person;
     }
 
+    @JsonIgnore
     public List<Ordering> getOrderList() {
         return orderingList;
     }

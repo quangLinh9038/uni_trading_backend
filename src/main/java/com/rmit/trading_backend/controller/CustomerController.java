@@ -32,7 +32,7 @@ public class CustomerController {
         }
     }
 
-    // GET CUSTOMER BY NAME
+    // GET CUSTOMERS BY NAME
     @GetMapping("/customerByName/{name}")
     public ResponseEntity<List<Customer>> getCustomerByName(@PathVariable("name") String name) {
         try {
