@@ -42,6 +42,9 @@ public class ProductController {
     @GetMapping("/productByName/{name}")
     public ResponseEntity<List<Product>> getProductByName(@PathVariable("name") String name) {
         try {
+            if (productRepository.findProductByNameContaining(name).isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
             return new ResponseEntity<>(productRepository.findProductByNameContaining(name), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -52,6 +55,9 @@ public class ProductController {
     @GetMapping("/productByBrand/{brand}")
     public ResponseEntity<List<Product>> getProductByBrand(@PathVariable("brand") String brand) {
         try {
+            if (productRepository.findProductsByBrandContaining(brand).isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
             return new ResponseEntity<>(productRepository.findProductsByBrandContaining(brand), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -62,6 +68,9 @@ public class ProductController {
     @GetMapping("/productByCategoryId/{id}")
     public ResponseEntity<List<Product>> getProductByCategory(@PathVariable(value = "id") int categoryID) {
         try {
+            if (productRepository.findAllProductByCategoryId(categoryID).isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
             return new ResponseEntity<>(productRepository.findAllProductByCategoryId(categoryID), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -71,6 +80,9 @@ public class ProductController {
     @GetMapping("/productByCategoryName/{name}")
     public ResponseEntity<List<Product>> getProductByCategory(@PathVariable(value = "name") String categoryName) {
         try {
+            if (productRepository.findAllProductByCategoryName(categoryName).isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
             return new ResponseEntity<>(productRepository.findAllProductByCategoryName(categoryName), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
