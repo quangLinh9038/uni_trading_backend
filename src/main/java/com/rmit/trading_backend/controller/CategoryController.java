@@ -21,10 +21,13 @@ public class CategoryController {
     @GetMapping("/categories")
     public ResponseEntity<List<Category>> getAllCategory() {
         try {
-            if (categoryRepository.findAll().isEmpty()) {
+
+            List<Category> categories = categoryRepository.findAll();
+
+            if (categories.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(categoryRepository.findAll(), HttpStatus.OK);
+            return new ResponseEntity<>(categories, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -40,5 +43,4 @@ public class CategoryController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

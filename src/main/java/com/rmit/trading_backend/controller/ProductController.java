@@ -1,6 +1,5 @@
 package com.rmit.trading_backend.controller;
 
-import com.rmit.trading_backend.model.product.Category;
 import com.rmit.trading_backend.model.product.Product;
 import com.rmit.trading_backend.repository.CategoryRepository;
 import com.rmit.trading_backend.repository.ProductRepository;
@@ -47,7 +46,7 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProductByName(@PathVariable("name") String name) {
         try {
             if (productRepository.findProductByNameContaining(name).isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(productRepository.findProductByNameContaining(name), HttpStatus.OK);
         } catch (Exception e) {
@@ -60,7 +59,7 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProductByBrand(@PathVariable("brand") String brand) {
         try {
             if (productRepository.findProductsByBrandContaining(brand).isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(productRepository.findProductsByBrandContaining(brand), HttpStatus.OK);
         } catch (Exception e) {
@@ -73,13 +72,15 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProductByCategory(@PathVariable(value = "id") int categoryID) {
         try {
             if (productRepository.findAllProductByCategoryId(categoryID).isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(productRepository.findAllProductByCategoryId(categoryID), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
     //GET PRODUCT BY CATEGORY NAME
     @GetMapping("/productByCategoryName/{name}")
     public ResponseEntity<List<Product>> getProductByCategory(@PathVariable(value = "name") String categoryName) {
@@ -97,18 +98,18 @@ public class ProductController {
     // POST list of products
     @PostMapping("/products")
     public ResponseEntity<List<Product>> addList(@RequestBody List<Product> products) {
+
         try {
-            if(productService.addProduct(products)){
-                return new ResponseEntity<>(products,HttpStatus.CREATED);
+            if (productService.addProduct(products)) {
+                return new ResponseEntity<>(products, HttpStatus.CREATED);
             }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    // DELETE ONE
+    // DELETE ONE PRODUCT
     @DeleteMapping("/products/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable("id") int id) {
         try {
@@ -140,26 +141,27 @@ public class ProductController {
     @PutMapping("products/{id}")
     public ResponseEntity<Product> updateCustomerById(@PathVariable("id") int id, @RequestBody Product product) {
         Optional<Product> updatedProduct = productRepository.findById(id);
+        try {
+            if (updatedProduct.isPresent()) {
 
-        if (updatedProduct.isPresent()) {
+                Product _product = updatedProduct.get();
 
-            Product _product = updatedProduct.get();
+                _product.setName(product.getName());
+                _product.setModel(product.getModel());
+                _product.setBrand(product.getBrand());
+                _product.setPrice(product.getPrice());
+                _product.setDescriptions(product.getDescriptions());
+                _product.setCompany(product.getCompany());
+                _product.setCategory(product.getCategory());
 
-            _product.setName(_product.getName());
-            _product.setModel(_product.getModel());
-            _product.setBrand(_product.getBrand());
-            _product.setPrice(_product.getPrice());
-            _product.setDescriptions(_product.getDescriptions());
-            _product.setCompany(_product.getCompany());
-            _product.setCategory(_product.getCategory());
-
-
-            productRepository.save(_product);
-            return new ResponseEntity<>(_product, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                productRepository.save(product);
+                return new ResponseEntity<>(product, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e ){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 }

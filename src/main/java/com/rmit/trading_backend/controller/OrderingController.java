@@ -1,52 +1,139 @@
 package com.rmit.trading_backend.controller;
 
 
-import com.rmit.trading_backend.model.ordering.OrderDetail;
+import com.rmit.trading_backend.model.actor.Staff;
 import com.rmit.trading_backend.model.ordering.Ordering;
 import com.rmit.trading_backend.repository.OrderingRepository;
-import org.hibernate.criterion.Order;
+import com.rmit.trading_backend.repository.StaffRepository;
+import com.rmit.trading_backend.service.OrderingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-// TODO: Order
-// CRUD functions
 
 @CrossOrigin(origins = "http://localhost:9090")
 @RestController
 @RequestMapping("/api")
 public class OrderingController {
+
     @Autowired
     private OrderingRepository orderingRepository;
 
+    @Autowired
+    private OrderingService orderingService;
+
+    @Autowired
+    private StaffRepository staffRepository;
+
     //GET ALL ORDERS
+    //SEARCH ORDER BY STAFF_NAME
     @GetMapping("/orders")
-    public ResponseEntity<List<Ordering>> getAllCategory() {
+    public ResponseEntity<List<Ordering>> getAllOrders(@RequestParam(required = false) String staffName) {
         try {
-            if (orderingRepository.findAll().isEmpty()) {
+
+            List<Ordering> orderings = new ArrayList<>();
+
+            if (staffName == null) {
+                orderingRepository.findAll().forEach(orderings::add);
+            }
+            else {
+                Staff staff = staffRepository.findStaffByNameContains(staffName);
+
+                // find order by staff name
+                orderingRepository.findAllByStaff(staff).forEach(orderings::add);
+            }
+
+            if (orderings.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(orderingRepository.findAll(), HttpStatus.OK);
+
+            return new ResponseEntity<>(orderings, HttpStatus.OK);
+
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+
+    //TODO
+    // GET ALL ORDERS BY A PROVIDER
+
+
     //POST NEW ORDER
     @PostMapping("/orders")
-    public ResponseEntity<List<Ordering>> addCategory(@RequestBody List<Ordering> orderings) {
+    public ResponseEntity<List<Ordering>> addOrders(@RequestBody List<Ordering> orderings) {
         try {
-            orderingRepository.saveAll(orderings);
-
-            return new ResponseEntity<>(orderings, HttpStatus.CREATED);
-
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        catch (Exception e) {
+            if (orderingService.addOrders(orderings)) {
+                return new ResponseEntity<>(orderings, HttpStatus.CREATED);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    //DELETE ORDERS
+    @DeleteMapping("/orders")
+    public ResponseEntity<String> deleteAllOrders() {
+        try {
+
+            List<Ordering> deleteOrders = orderingRepository.findAll();
+
+            if (deleteOrders.isEmpty()) {
+                return new ResponseEntity<>("Empty product list", HttpStatus.NO_CONTENT);
+            }
+            orderingRepository.deleteAll();
+            return new ResponseEntity<>("Delete all successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //DELETE AN ORDER BY ID
+    @DeleteMapping("/orders/{id}")
+    public ResponseEntity<String> deleteOrder(@PathVariable("id") long id) {
+        try {
+
+            Optional<Ordering> checkedOrder = orderingRepository.findById(id);
+
+            if (checkedOrder.isPresent()) {
+                orderingRepository.deleteById(id);
+
+                return new ResponseEntity<>("Success", HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Order not found", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //UPDATE AN ORDER
+    @PutMapping("/orders/{id}")
+    public ResponseEntity<Ordering> updateOrderById(@PathVariable("id") long id, @RequestBody Ordering ordering) {
+
+        Optional<Ordering> updatedOrdering = orderingRepository.findById(id);
+
+        if (updatedOrdering.isPresent()) {
+
+            Ordering _ordering = updatedOrdering.get();
+
+            _ordering.setOrderedDate(ordering.getOrderedDate());
+            _ordering.setStaff(ordering.getStaff());
+            _ordering.setProvider(ordering.getProvider());
+            _ordering.setOrderDetailList(ordering.getOrderDetailList());
+
+            orderingRepository.save(_ordering);
+
+            return new ResponseEntity<>(_ordering, HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

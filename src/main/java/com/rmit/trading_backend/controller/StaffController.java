@@ -1,7 +1,6 @@
 package com.rmit.trading_backend.controller;
 
 
-import com.rmit.trading_backend.model.actor.Provider;
 import com.rmit.trading_backend.model.actor.Staff;
 import com.rmit.trading_backend.repository.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;

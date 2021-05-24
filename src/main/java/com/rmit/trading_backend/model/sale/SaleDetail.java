@@ -1,7 +1,5 @@
 package com.rmit.trading_backend.model.sale;
 
-import com.rmit.trading_backend.model.product.Product;
-
 import javax.persistence.*;
 
 @Entity

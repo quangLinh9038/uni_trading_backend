@@ -14,7 +14,7 @@ public class Provider extends Person {
     @Column
     private String contact_person;
 
-    @OneToMany(mappedBy = "provider", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "provider", fetch = FetchType.LAZY)
     private List<Ordering> orderingList = new ArrayList<>();
 
 

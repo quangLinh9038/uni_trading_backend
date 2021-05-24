@@ -4,28 +4,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.product.Product;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
+@Table(name = "order_details")
 public class OrderDetail {
 
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
     private int quantity;
 
-    @Column
     private long price;
 
     @ManyToOne
     private Ordering ordering;
 
-    @OneToMany(mappedBy = "orderDetail", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Product> productList = new ArrayList<>();
+    @OneToOne
+    private Product product;
 
     public OrderDetail() {
     }
@@ -62,11 +58,11 @@ public class OrderDetail {
         this.ordering = ordering;
     }
 
-    public List<Product> getProductList() {
-        return productList;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

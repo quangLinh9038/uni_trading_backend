@@ -7,7 +7,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -17,32 +16,22 @@ import java.util.List;
 @Table(name = "staff")
 public class Staff extends Person {
 
-    private String company;
-
-
     // fetching staff with 2 collection will throw MultipleBagFetchException in fetchType.Eager
     // using @LazyCollection instead of
 
     // one staff can make many orders
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "staff")
+    @JsonIgnore
     private List<Ordering> orderingList = new ArrayList<>();
 
     // one staff can make many sale invoices
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "staff")
-
+    @JsonIgnore
     private List<SaleInvoice> saleInvoiceList = new ArrayList<>();
 
     public Staff() {
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
     }
 
     public List<Ordering> getOrderingList() {

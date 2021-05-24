@@ -16,17 +16,18 @@ import java.util.Optional;
 public class CustomerController {
 
     @Autowired
-    private CustomerRepository customerRepository;
+    CustomerRepository customerRepository;
 
     // GET ALL CUSTOMERS
     @GetMapping(value = {"/", "customers"})
     public ResponseEntity<List<Customer>> getAllCustomers() {
         try {
+            List<Customer> customerList = customerRepository.findAll();
             // check empty list
-            if (customerRepository.findAll().isEmpty()) {
+            if (customerList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(customerRepository.findAll(), HttpStatus.OK);
+            return new ResponseEntity<>(customerList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

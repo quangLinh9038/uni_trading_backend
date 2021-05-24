@@ -33,14 +33,15 @@ public class Product {
     private String company;
 
     @ManyToOne
+    @JsonIgnore
     private Category category;
 
-    @ManyToOne
+    @OneToOne
+    @PrimaryKeyJoinColumn
     @JsonIgnore
     private OrderDetail orderDetail;
 
-
-    // mapping product info to Sale Invoice
+//     mapping product info to Sale Invoice
 //    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
 //    private List<SaleDetail> saleDetailList;
 

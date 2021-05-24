@@ -1,11 +1,11 @@
 package com.rmit.trading_backend.model.ordering;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.actor.Provider;
 import com.rmit.trading_backend.model.actor.Staff;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class Ordering {
     private long id;
 
     @Column
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date orderedDate;
 
     // mapping to Provider
@@ -30,9 +30,8 @@ public class Ordering {
     @ManyToOne
     private Staff staff;
 
-
-    @OneToMany(mappedBy = "ordering", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<OrderDetail> orderDetailList;
+    @OneToMany(mappedBy = "ordering", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetailList = new ArrayList<>();
 
 
     public Ordering() {

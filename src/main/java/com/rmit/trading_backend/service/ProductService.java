@@ -24,25 +24,24 @@ public class ProductService {
 
     // ADD NEW PRODUCTS
     // adding a list or one product
-    public boolean addProduct(List<Product> productList){
-            for (Product product: productList){
+    public boolean addProduct(List<Product> productList) {
+        for (Product product : productList) {
 
-                // checking valid category matched with requests of adding category into product by cate_name
+            // checking valid category matched with requests of adding category into product by cate_name
+            Category category = categoryRepository.findCategoryByName(product.getCategory().getName());
+            Optional<Category> checkCategory = Optional.ofNullable(category);
 
-                Category category = categoryRepository.findCategoryByName(product.getCategory().getName());
-                Optional<Category> checkCategory = Optional.ofNullable(category);
+            if (checkCategory.isPresent()) {
 
-                if(checkCategory.isPresent()){
+                product.setCategory(category);
 
-                    product.setCategory(category);
+                productRepository.saveAll(productList);
 
-                    productRepository.saveAll(productList);
-
-                    System.out.println("Add product successfully");
-                    return true;
-                }
-                System.out.println("Category not found");
+                System.out.println("Add product successfully");
+                return true;
             }
-            return false;
+            System.out.println("Category not found");
         }
+        return false;
+    }
 }
