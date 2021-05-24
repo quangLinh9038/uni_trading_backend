@@ -17,9 +17,6 @@ import java.util.List;
 @Table(name = "staff")
 public class Staff extends Person {
 
-    private String company;
-
-
     // fetching staff with 2 collection will throw MultipleBagFetchException in fetchType.Eager
     // using @LazyCollection instead of
 
@@ -31,18 +28,9 @@ public class Staff extends Person {
     // one staff can make many sale invoices
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "staff")
-
     private List<SaleInvoice> saleInvoiceList = new ArrayList<>();
 
     public Staff() {
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
     }
 
     public List<Ordering> getOrderingList() {
