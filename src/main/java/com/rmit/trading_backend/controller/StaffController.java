@@ -107,26 +107,22 @@ public class StaffController {
     }
 
     // UPDATE
-    @PutMapping("staff/{id}")
+    @PutMapping("/staff/{id}")
     public ResponseEntity<Staff> updateStaffById(@PathVariable("id") int id, @RequestBody Staff staff) {
         Optional<Staff> updatedStaff = staffRepository.findById(id);
 
         if (updatedStaff.isPresent()) {
-
             Staff _staff = updatedStaff.get();
 
-            _staff.setName(_staff.getName());
-            _staff.setPhone(_staff.getPhone());
-            _staff.setAddress(_staff.getAddress());
-            _staff.setEmail(_staff.getEmail());
-            _staff.setFax(_staff.getFax());
-
-            staffRepository.save(_staff);
-            return new ResponseEntity<>(_staff, HttpStatus.OK);
+            _staff.setName(staff.getName());
+            _staff.setPhone(staff.getPhone());
+            _staff.setAddress(staff.getAddress());
+            _staff.setEmail(staff.getEmail());
+            _staff.setFax(staff.getFax());
+            return new ResponseEntity<>(staffRepository.save(_staff), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
-
+    } 
 
 }
