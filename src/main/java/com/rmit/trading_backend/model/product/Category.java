@@ -1,5 +1,7 @@
 package com.rmit.trading_backend.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,8 @@ public class Category {
     @Column
     private String name;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Product> products = new ArrayList<>();
 
     public Category() {

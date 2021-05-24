@@ -33,7 +33,6 @@ public class Product {
     private String company;
 
     @ManyToOne
-    @JsonIgnore
     private Category category;
 
     @OneToOne
