@@ -9,4 +9,6 @@ public interface ProviderRepository extends JpaRepository<Provider, Integer> {
 
 
     Provider findProviderByEmail(String email);
+
+    Provider findProviderByName(String name);
 }

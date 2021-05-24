@@ -2,15 +2,16 @@ package com.rmit.trading_backend.model.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.ordering.OrderDetail;
+import com.rmit.trading_backend.model.sale.SaleDetail;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
 public class Product {
 
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
@@ -32,8 +33,8 @@ public class Product {
     @Column
     private String company;
 
-    @ManyToOne
-    @JsonIgnore
+    @Embedded
+    @AttributeOverrides(value = {@AttributeOverride( name = "name", column = @Column(name = "category"))})
     private Category category;
 
     @OneToOne
@@ -42,8 +43,9 @@ public class Product {
     private OrderDetail orderDetail;
 
 //     mapping product info to Sale Invoice
-//    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-//    private List<SaleDetail> saleDetailList;
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    private SaleDetail saleDetailList;
 
     public Product() {
     }
@@ -120,12 +122,13 @@ public class Product {
         this.orderDetail = orderDetail;
     }
 
-    //
-//    public List<SaleDetail> getSaleDetailList() {
-//        return saleDetailList;
-//    }
-//
-//    public void setSaleDetailList(List<SaleDetail> saleDetailList) {
-//        this.saleDetailList = saleDetailList;
-//    }
+
+    public SaleDetail getSaleDetailList() {
+        return saleDetailList;
+    }
+
+    public void setSaleDetailList(SaleDetail saleDetailList) {
+        this.saleDetailList = saleDetailList;
+    }
 }
+

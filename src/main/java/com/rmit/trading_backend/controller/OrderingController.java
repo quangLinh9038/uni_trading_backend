@@ -1,9 +1,11 @@
 package com.rmit.trading_backend.controller;
 
 
+import com.rmit.trading_backend.model.actor.Provider;
 import com.rmit.trading_backend.model.actor.Staff;
 import com.rmit.trading_backend.model.ordering.Ordering;
 import com.rmit.trading_backend.repository.OrderingRepository;
+import com.rmit.trading_backend.repository.ProviderRepository;
 import com.rmit.trading_backend.repository.StaffRepository;
 import com.rmit.trading_backend.service.OrderingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class OrderingController {
 
     @Autowired
     private StaffRepository staffRepository;
+
+    @Autowired
+    ProviderRepository providerRepository;
 
     //GET ALL ORDERS
     //SEARCH ORDER BY STAFF_NAME
@@ -59,10 +64,32 @@ public class OrderingController {
         }
     }
 
+    @GetMapping("/orderByProvider")
+    public ResponseEntity<List<Ordering>> getOrdersByProvider(@RequestParam(required = false) String name) {
+        try {
 
-    //TODO
-    // GET ALL ORDERS BY A PROVIDER
+            List<Ordering> orderings = new ArrayList<>();
 
+            if (name == null) {
+                orderingRepository.findAll().forEach(orderings::add);
+            }
+            else {
+                Provider provider = providerRepository.findProviderByName(name);
+
+                // find order by staff name
+                orderingRepository.findAllByProvider(provider).forEach(orderings::add);
+            }
+
+            if (orderings.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(orderings, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     //POST NEW ORDER
     @PostMapping("/orders")

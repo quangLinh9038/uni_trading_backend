@@ -6,15 +6,16 @@ import com.rmit.trading_backend.model.product.Product;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "order_details")
 public class OrderDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column
     private int quantity;
 
+    @Column
     private long price;
 
     @ManyToOne

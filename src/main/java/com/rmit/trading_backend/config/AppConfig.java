@@ -35,7 +35,7 @@ public class AppConfig {
         // define type of database - PostgresSQL
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.put("hibernate.show_sql", true);
-        properties.put("hibernate.hbm2ddl.auto", "create-drop");
+        properties.put("hibernate.hbm2ddl.auto", "update");
 
         // mapping all entities to the DB
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();

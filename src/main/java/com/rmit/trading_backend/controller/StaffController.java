@@ -35,12 +35,15 @@ public class StaffController {
 
     // GET STAFFS BY NAME
     @GetMapping("/staffById/{id}")
-    public ResponseEntity<List<Staff>> getStaffById(@PathVariable("id") int id) {
+    public ResponseEntity<Optional<Staff>> getStaffById(@PathVariable("id") int id) {
         try {
-            if (staffRepository.findStaffByIdContaining(id).isEmpty()) {
+            Optional<Staff> staff = staffRepository.findById(id);
+
+            if (staff.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(staffRepository.findStaffByIdContaining(id), HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
+
         } catch (Exception e) {
             System.out.println("error");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

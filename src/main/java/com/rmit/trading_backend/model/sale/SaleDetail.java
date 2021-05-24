@@ -1,5 +1,7 @@
 package com.rmit.trading_backend.model.sale;
 
+import com.rmit.trading_backend.model.product.Product;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,9 +17,9 @@ public class SaleDetail {
 
     @Column
     private int quantity;
-//
-//    @ManyToOne
-//    private Product product;
+
+    @OneToOne
+    private Product product;
 
     @ManyToOne
     private SaleInvoice saleInvoice;
@@ -49,13 +51,13 @@ public class SaleDetail {
         this.quantity = quantity;
     }
 
-//    public Product getProduct() {
-//        return product;
-//    }
-//
-//    public void setProduct(Product product) {
-//        this.product = product;
-//    }
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
     public SaleInvoice getSaleInvoice() {
         return saleInvoice;

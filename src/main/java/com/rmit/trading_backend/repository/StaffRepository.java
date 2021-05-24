@@ -9,8 +9,7 @@ import java.util.List;
 public interface StaffRepository extends JpaRepository<Staff, Integer> {
 
     Staff findStaffByEmail(String email);
-
-    List<Staff> findStaffByIdContaining(int id);
+    Staff findStaffByNameContains(String staffName);
     List<Staff> findStaffByNameContaining(String name);
 
 }
