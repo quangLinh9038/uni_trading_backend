@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SaleInvoiceRepository extends JpaRepository<SaleInvoice, Long> {
 
+    SaleInvoice findSaleInvoiceById(long id);
 }

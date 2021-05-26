@@ -1,8 +1,10 @@
 package com.rmit.trading_backend.model.actor;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.sale.SaleInvoice;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +16,8 @@ public class Customer extends Person {
 
     // one customer can receive many sale invoices
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
-    private List<SaleInvoice> saleInvoiceList;
+    @JsonIgnore
+    private List<SaleInvoice> saleInvoiceList = new ArrayList<>();
 
     public Customer() {
     }

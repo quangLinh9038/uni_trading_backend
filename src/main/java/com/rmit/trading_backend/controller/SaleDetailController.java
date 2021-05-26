@@ -1,0 +1,124 @@
+package com.rmit.trading_backend.controller;
+
+import com.rmit.trading_backend.model.product.Product;
+import com.rmit.trading_backend.model.sale.SaleDetail;
+import com.rmit.trading_backend.repository.SaleInvoiceRepository;
+import com.rmit.trading_backend.repository.SaleDetailRepository;
+import com.rmit.trading_backend.service.SaleDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@CrossOrigin(origins = "http://localhost:9090")
+@RestController
+@RequestMapping("/api")
+public class SaleDetailController {
+
+    @Autowired
+    private SaleDetailRepository saleDetailRepository;
+
+    @Autowired
+    private SaleInvoiceRepository saleInvoiceRepository;
+
+    @Autowired
+    private SaleDetailService saleDetailService;
+
+    // GET ALL SALE DETAILS
+    @GetMapping("/saleDetails")
+    public ResponseEntity<List<SaleDetail>> getAllSalesInvoiceDetail() {
+        try {
+            // check empty list
+            if (saleDetailRepository.findAll().isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(saleDetailRepository.findAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //GET DETAILS BY SALES INVOICE ID
+    @GetMapping("/salesInvoiceDetails/{id}")
+    public ResponseEntity<List<SaleDetail>> getSaleDetailByID(@PathVariable("id") long saleInvoiceId) {
+        try {
+            if (saleDetailRepository.findAllBySaleInvoiceId(saleInvoiceId).isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(saleDetailRepository.findAllBySaleInvoiceId(saleInvoiceId), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // POST DETAILS TO A SALE INVOICE
+    @PostMapping("/saleDetails")
+    public ResponseEntity<List<SaleDetail>> addDetails(@RequestBody List<SaleDetail> details) {
+
+        try {
+            if (saleDetailService.addInvoiceDetail(details)) {
+                return new ResponseEntity<>(details, HttpStatus.CREATED);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // DELETE ALL
+    @DeleteMapping("/saleDetails")
+    public ResponseEntity<String> deleteAllSaleDetails() {
+        try {
+            if (saleDetailRepository.findAll().isEmpty()) {
+                return new ResponseEntity<>("Empty invoice list", HttpStatus.NO_CONTENT);
+            }
+            saleDetailRepository.deleteAll();
+            return new ResponseEntity<>("Delete all successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // DELETE ONE DETAIL
+    @DeleteMapping("/saleDetails/{id}")
+    public ResponseEntity<String> deleteDetail(@PathVariable("id") long id) {
+        try {
+            if (saleDetailRepository.findById(id).isPresent()) {
+                saleDetailRepository.deleteById(id);
+                return new ResponseEntity<>("Success", HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // UPDATE
+    @PutMapping("/saleDetails/{id}")
+    public ResponseEntity<SaleDetail> updateCustomerById(@PathVariable("id") long id, @RequestBody SaleDetail saleDetail) {
+        Optional<SaleDetail> updatedSaleDetail = saleDetailRepository.findById(id);
+        try {
+            if (updatedSaleDetail.isPresent()) {
+
+                SaleDetail _saleDetail = updatedSaleDetail.get();
+
+                _saleDetail.setSaleInvoice(saleDetail.getSaleInvoice());
+                _saleDetail.setProduct(saleDetail.getProduct());
+                _saleDetail.setQuantity(saleDetail.getQuantity());
+                _saleDetail.setPrice(saleDetail.getPrice());
+
+                saleDetailRepository.save(saleDetail);
+                return new ResponseEntity<>(saleDetail, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e ){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+}

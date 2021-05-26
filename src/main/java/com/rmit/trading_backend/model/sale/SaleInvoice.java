@@ -1,10 +1,12 @@
 package com.rmit.trading_backend.model.sale;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.actor.Customer;
 import com.rmit.trading_backend.model.actor.Staff;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,17 +28,14 @@ public class SaleInvoice {
     private Staff staff;
 
     @OneToMany(mappedBy = "saleInvoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<SaleDetail> saleDetailList;
+    @JsonIgnore
+    private List<SaleDetail> saleDetailList = new ArrayList<>();
 
     public SaleInvoice() {
     }
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public LocalDate getDate() {
