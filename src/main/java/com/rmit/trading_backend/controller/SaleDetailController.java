@@ -39,8 +39,8 @@ public class SaleDetailController {
     }
 
     //GET DETAILS BY SALES INVOICE ID
-    @GetMapping("/salesInvoiceDetails/{id}")
-    public ResponseEntity<List<SaleDetail>> getSaleDetailByID(@PathVariable("id") long saleInvoiceId) {
+    @GetMapping("/saleInvoiceDetails/{id}")
+    public ResponseEntity<List<SaleDetail>> getDetailsBySaleInvoiceID(@PathVariable("id") long saleInvoiceId) {
         try {
             if (saleDetailRepository.findAllBySaleInvoiceId(saleInvoiceId).isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

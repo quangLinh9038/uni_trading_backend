@@ -90,7 +90,7 @@ public class StaffController {
 
     // DELETE ONE STAFF BY ID
     @DeleteMapping("/staff/{id}")
-    public ResponseEntity<String> deleteStaff(@PathVariable("id") int id) {
+    public ResponseEntity<String> deleteStaff(@PathVariable("id") Long id) {
         try {
             if (staffRepository.findById(id).isPresent()) {
                 staffRepository.deleteById(id);
@@ -104,7 +104,7 @@ public class StaffController {
 
     // UPDATE
     @PutMapping("/staff/{id}")
-    public ResponseEntity<Staff> updateStaffById(@PathVariable("id") int id, @RequestBody Staff staff) {
+    public ResponseEntity<Staff> updateStaffById(@PathVariable("id") Long id, @RequestBody Staff staff) {
         Optional<Staff> updatedStaff = staffRepository.findById(id);
 
         if (updatedStaff.isPresent()) {

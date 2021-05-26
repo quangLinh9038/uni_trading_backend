@@ -2,6 +2,8 @@ package com.rmit.trading_backend.model.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.ordering.OrderDetail;
+import com.rmit.trading_backend.model.sale.DeliveryDetail;
+import com.rmit.trading_backend.model.sale.SaleDetail;
 
 import javax.persistence.*;
 
@@ -39,6 +41,14 @@ public class Product {
     @PrimaryKeyJoinColumn
     @JsonIgnore
     private OrderDetail orderDetail;
+
+    @OneToOne
+    @JsonIgnore
+    private SaleDetail saleDetail;
+
+    @OneToOne
+    @JsonIgnore
+    private DeliveryDetail deliveryDetail;
 
 //     mapping product info to Sale Invoice
 //    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)

@@ -1,7 +1,9 @@
 package com.rmit.trading_backend.service;
 
+import com.rmit.trading_backend.model.product.Product;
 import com.rmit.trading_backend.model.sale.SaleDetail;
 import com.rmit.trading_backend.model.sale.SaleInvoice;
+import com.rmit.trading_backend.repository.ProductRepository;
 import com.rmit.trading_backend.repository.SaleInvoiceRepository;
 import com.rmit.trading_backend.repository.SaleDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,25 +23,26 @@ public class SaleDetailService {
     @Autowired
     private SaleInvoiceRepository saleInvoiceRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     // ADD DETAIL OF ONE INVOICE
-    public boolean addInvoiceDetail(List<SaleDetail> salesInvoiceDetailList) {
-        for (SaleDetail detail : salesInvoiceDetailList) {
+    public void addSaleDetail(SaleDetail saleDetail) {
 
-            SaleInvoice saleInvoice = saleInvoiceRepository.findSaleInvoiceById(detail.getSaleInvoice().getId());
-            Optional<SaleInvoice> checkSaleInvoice = Optional.ofNullable(saleInvoice);
+        Optional<SaleInvoice> checkSaleInvoice = saleInvoiceRepository.findById(saleDetail.getSaleInvoice().getId());
+        Optional<Product> checkProduct = productRepository.findById(saleDetail.getProduct().getId());
 
-            if (checkSaleInvoice.isPresent()) {
+        if (checkSaleInvoice.isPresent() && checkProduct.isPresent()) {
 
-                detail.setSaleInvoice(saleInvoice);
+            SaleInvoice _saleInvoice = checkSaleInvoice.get();
+            Product _product = checkProduct.get();
 
-                saleDetailRepository.saveAll(salesInvoiceDetailList);
+            saleDetail.setSaleInvoice(_saleInvoice);
+            saleDetail.setProduct(_product);
 
-                System.out.println("Add details successfully");
-                return true;
-            }
-            System.out.println("Not found");
+            saleDetailRepository.save(saleDetail);
+            System.out.println("Add detail successfully");
         }
-        return false;
+        System.out.println("Sale invoice or product not found");
     }
-
 }

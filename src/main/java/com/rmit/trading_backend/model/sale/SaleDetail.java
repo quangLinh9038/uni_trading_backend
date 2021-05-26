@@ -1,5 +1,6 @@
 package com.rmit.trading_backend.model.sale;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.product.Product;
 
 import javax.persistence.*;
@@ -14,16 +15,21 @@ public class SaleDetail {
     private long id;
 
     @Column
-    private int price;
+    private long price;
 
     @Column
     private int quantity;
 
     @OneToOne
-    private Product product;
+    @JsonIgnore
+    private DeliveryDetail deliveryDetail;
 
     @ManyToOne
     private SaleInvoice saleInvoice;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     public SaleDetail() {
     }
@@ -36,11 +42,11 @@ public class SaleDetail {
         this.id = id;
     }
 
-    public int getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 
@@ -52,12 +58,12 @@ public class SaleDetail {
         this.quantity = quantity;
     }
 
-    public Product getProduct() {
-        return product;
+    public DeliveryDetail getDeliveryDetail() {
+        return deliveryDetail;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setDeliveryDetail(DeliveryDetail deliveryDetail) {
+        this.deliveryDetail = deliveryDetail;
     }
 
     public SaleInvoice getSaleInvoice() {
@@ -66,5 +72,13 @@ public class SaleDetail {
 
     public void setSaleInvoice(SaleInvoice saleInvoice) {
         this.saleInvoice = saleInvoice;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }
