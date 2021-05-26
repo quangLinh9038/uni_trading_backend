@@ -6,23 +6,29 @@ import com.rmit.trading_backend.model.product.Product;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "order_details")
 public class OrderDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @Column
     private int quantity;
 
     @Column
-    private long price;
+    private long totalPrice;
 
     @ManyToOne
     private Ordering ordering;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id")
     private Product product;
+
+    @OneToOne
+    @JsonIgnore
+    private ReceivedDetail receivedDetail;
 
     public OrderDetail() {
     }
@@ -31,7 +37,7 @@ public class OrderDetail {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -43,12 +49,12 @@ public class OrderDetail {
         this.quantity = quantity;
     }
 
-    public long getPrice() {
-        return price;
+    public long getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setPrice(long price) {
-        this.price = price;
+    public void setTotalPrice(long totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public Ordering getOrdering() {
@@ -65,5 +71,13 @@ public class OrderDetail {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public ReceivedDetail getReceivedDetail() {
+        return receivedDetail;
+    }
+
+    public void setReceivedDetail(ReceivedDetail receivedDetail) {
+        this.receivedDetail = receivedDetail;
     }
 }

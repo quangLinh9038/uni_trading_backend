@@ -1,12 +1,15 @@
 package com.rmit.trading_backend.controller;
 
+import com.rmit.trading_backend.model.product.Category;
 import com.rmit.trading_backend.model.product.Product;
-import com.rmit.trading_backend.repository.ProductRepository;
+import com.rmit.trading_backend.repository.actor.repository.ProductRepository;
+import com.rmit.trading_backend.repository.product.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +18,8 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class ProductController {
 
+    @Autowired
+    CategoryRepository categoryRepository;
     @Autowired
     private ProductRepository productRepository;
 
@@ -34,12 +39,14 @@ public class ProductController {
 
     //GET PRODUCT BY NAME
     @GetMapping("/productByName/{name}")
-    public ResponseEntity<List<Product>> getProductByName(@PathVariable("name") String name) {
+    public ResponseEntity<Optional<Product>> getProductByName(@PathVariable("name") String name) {
         try {
-            if (productRepository.findProductByNameContaining(name).isEmpty()) {
+            Optional<Product> product = productRepository.findProductByNameContaining(name);
+
+            if (product.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(productRepository.findProductByNameContaining(name), HttpStatus.OK);
+            return new ResponseEntity<>(product, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -72,18 +79,28 @@ public class ProductController {
         }
     }
 
-
     // POST list of products
     @PostMapping("/products")
     public ResponseEntity<List<Product>> addProducts(@RequestBody List<Product> products) {
 
         try {
-            if(products.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
+            List<Product> newProducts = new ArrayList<>();
 
-            productRepository.saveAll(products);
-            return new ResponseEntity<>(products,HttpStatus.CREATED);
+            for (Product product : products) {
+
+                Optional<Category> category = categoryRepository.findCategoryByName(product.getCategory().getName());
+
+                if (category.isPresent()) {
+                    Category _category = category.get();
+                    product.setCategory(_category);
+                    newProducts.add(product);
+                }
+            }
+            if (newProducts.isEmpty()) {
+                return new ResponseEntity<>(newProducts, HttpStatus.NOT_FOUND);
+            }
+            productRepository.saveAll(newProducts);
+            return new ResponseEntity<>(newProducts, HttpStatus.OK);
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -140,7 +157,7 @@ public class ProductController {
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-        } catch (Exception e ){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -1,6 +1,7 @@
 package com.rmit.trading_backend.model.ordering;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.actor.Provider;
 import com.rmit.trading_backend.model.actor.Staff;
 
@@ -31,10 +32,18 @@ public class Ordering {
     private Staff staff;
 
     @OneToMany(mappedBy = "ordering", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<OrderDetail> orderDetailList = new ArrayList<>();
 
+    // mapping to ReceivedNote
+    @OneToOne
+    @JsonIgnore
+    private ReceivedNote receivedNote;
 
     public Ordering() {
+    }
+
+    public Ordering(Date orderedDate, Staff staff, Provider provider) {
     }
 
     public long getId() {
@@ -75,5 +84,13 @@ public class Ordering {
 
     public void setOrderDetailList(List<OrderDetail> orderDetailList) {
         this.orderDetailList = orderDetailList;
+    }
+
+    public ReceivedNote getReceivedNote() {
+        return receivedNote;
+    }
+
+    public void setReceivedNote(ReceivedNote receivedNote) {
+        this.receivedNote = receivedNote;
     }
 }

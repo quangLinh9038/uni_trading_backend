@@ -1,7 +1,7 @@
 package com.rmit.trading_backend.controller;
 
 import com.rmit.trading_backend.model.actor.Staff;
-import com.rmit.trading_backend.repository.StaffRepository;
+import com.rmit.trading_backend.repository.actor.repository.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -122,6 +122,6 @@ public class StaffController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    } 
+    }
 
 }

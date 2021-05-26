@@ -2,7 +2,7 @@ package com.rmit.trading_backend.model.actor;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.ordering.Ordering;
-import com.rmit.trading_backend.model.sale.SaleInvoice;
+import com.rmit.trading_backend.model.ordering.ReceivedNote;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -25,11 +25,18 @@ public class Staff extends Person {
     @JsonIgnore
     private List<Ordering> orderingList = new ArrayList<>();
 
-    // one staff can make many sale invoices
+    // one staff can make many received note
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "staff")
     @JsonIgnore
-    private List<SaleInvoice> saleInvoiceList = new ArrayList<>();
+    private final List<ReceivedNote> receivedNotes = new ArrayList<>();
+
+
+    // one staff can make many sale invoices
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    @OneToMany(mappedBy = "staff")
+//    @JsonIgnore
+//    private List<SaleInvoice> saleInvoiceList = new ArrayList<>();
 
     public Staff() {
     }
@@ -42,11 +49,5 @@ public class Staff extends Person {
         this.orderingList = orderingList;
     }
 
-    public List<SaleInvoice> getSaleInvoiceList() {
-        return saleInvoiceList;
-    }
 
-    public void setSaleInvoiceList(List<SaleInvoice> saleInvoiceList) {
-        this.saleInvoiceList = saleInvoiceList;
-    }
 }

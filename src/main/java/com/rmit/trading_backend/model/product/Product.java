@@ -2,18 +2,18 @@ package com.rmit.trading_backend.model.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.ordering.OrderDetail;
-import com.rmit.trading_backend.model.sale.SaleDetail;
+import com.rmit.trading_backend.model.ordering.ReceivedDetail;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "product")
-public class Product {
+public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @Column
     private String name;
@@ -33,19 +33,17 @@ public class Product {
     @Column
     private String company;
 
-    @Embedded
-    @AttributeOverrides(value = {@AttributeOverride( name = "name", column = @Column(name = "category"))})
+    @ManyToOne
     private Category category;
 
+    // mapping to orderDetail
     @OneToOne
-    @PrimaryKeyJoinColumn
     @JsonIgnore
     private OrderDetail orderDetail;
 
-//     mapping product info to Sale Invoice
     @OneToOne
-    @PrimaryKeyJoinColumn
-    private SaleDetail saleDetailList;
+    @JsonIgnore
+    private ReceivedDetail receivedDetail;
 
     public Product() {
     }
@@ -54,7 +52,7 @@ public class Product {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -122,13 +120,12 @@ public class Product {
         this.orderDetail = orderDetail;
     }
 
-
-    public SaleDetail getSaleDetailList() {
-        return saleDetailList;
+    public ReceivedDetail getReceivedDetail() {
+        return receivedDetail;
     }
 
-    public void setSaleDetailList(SaleDetail saleDetailList) {
-        this.saleDetailList = saleDetailList;
+    public void setReceivedDetail(ReceivedDetail receivedDetail) {
+        this.receivedDetail = receivedDetail;
     }
 }
 

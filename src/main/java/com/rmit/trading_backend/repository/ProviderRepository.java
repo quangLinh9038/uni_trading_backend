@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ProviderRepository extends JpaRepository<Provider, Integer> {
 
 
-    Provider findProviderByEmail(String email);
+    Optional<Provider> findProviderByEmail(String email);
 
-    Provider findProviderByName(String name);
+    Optional<Provider> findProviderByName(String name);
 }

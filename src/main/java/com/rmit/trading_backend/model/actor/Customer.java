@@ -1,9 +1,8 @@
 package com.rmit.trading_backend.model.actor;
 
-import com.rmit.trading_backend.model.sale.SaleInvoice;
-
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "customer")
@@ -12,9 +11,6 @@ public class Customer extends Person {
     @Column
     private String contact_person;
 
-    // one customer can receive many sale invoices
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
-    private List<SaleInvoice> saleInvoiceList;
 
     public Customer() {
     }
@@ -27,12 +23,6 @@ public class Customer extends Person {
         this.contact_person = contact_person;
     }
 
-    public List<SaleInvoice> getSaleInvoiceList() {
-        return saleInvoiceList;
-    }
 
-    public void setSaleInvoiceList(List<SaleInvoice> saleInvoiceList) {
-        this.saleInvoiceList = saleInvoiceList;
-    }
 }
 

@@ -4,9 +4,9 @@ package com.rmit.trading_backend.controller;
 import com.rmit.trading_backend.model.actor.Provider;
 import com.rmit.trading_backend.model.actor.Staff;
 import com.rmit.trading_backend.model.ordering.Ordering;
-import com.rmit.trading_backend.repository.OrderingRepository;
 import com.rmit.trading_backend.repository.ProviderRepository;
-import com.rmit.trading_backend.repository.StaffRepository;
+import com.rmit.trading_backend.repository.actor.repository.StaffRepository;
+import com.rmit.trading_backend.repository.product.repository.OrderingRepository;
 import com.rmit.trading_backend.service.OrderingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,16 +24,13 @@ import java.util.Optional;
 public class OrderingController {
 
     @Autowired
+    ProviderRepository providerRepository;
+    @Autowired
     private OrderingRepository orderingRepository;
-
     @Autowired
     private OrderingService orderingService;
-
     @Autowired
     private StaffRepository staffRepository;
-
-    @Autowired
-    ProviderRepository providerRepository;
 
     //GET ALL ORDERS
     //SEARCH ORDER BY STAFF_NAME
@@ -45,9 +42,8 @@ public class OrderingController {
 
             if (staffName == null) {
                 orderingRepository.findAll().forEach(orderings::add);
-            }
-            else {
-                Staff staff = staffRepository.findStaffByNameContains(staffName);
+            } else {
+                Optional<Staff> staff = staffRepository.findStaffByNameContains(staffName);
 
                 // find order by staff name
                 orderingRepository.findAllByStaff(staff).forEach(orderings::add);
@@ -72,12 +68,14 @@ public class OrderingController {
 
             if (name == null) {
                 orderingRepository.findAll().forEach(orderings::add);
-            }
-            else {
-                Provider provider = providerRepository.findProviderByName(name);
+            } else {
+                Optional<Provider> providerData = providerRepository.findProviderByName(name);
 
-                // find order by staff name
-                orderingRepository.findAllByProvider(provider).forEach(orderings::add);
+                if (providerData.isPresent()) {
+                    Provider _provider = providerData.get();
+                    // find order by staff name
+                    orderingRepository.findAllByProvider(_provider).forEach(orderings::add);
+                }
             }
 
             if (orderings.isEmpty()) {
@@ -95,11 +93,15 @@ public class OrderingController {
     @PostMapping("/orders")
     public ResponseEntity<List<Ordering>> addOrders(@RequestBody List<Ordering> orderings) {
         try {
-            if (orderingService.addOrders(orderings)) {
-                return new ResponseEntity<>(orderings, HttpStatus.CREATED);
+            orderingService.addNewOrder(orderings);
+
+            if (orderings.isEmpty()) {
+                return new ResponseEntity<>(orderings, HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(orderings, HttpStatus.OK);
+
         } catch (Exception e) {
+            System.out.println(e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -108,11 +110,10 @@ public class OrderingController {
     @DeleteMapping("/orders")
     public ResponseEntity<String> deleteAllOrders() {
         try {
-
             List<Ordering> deleteOrders = orderingRepository.findAll();
 
             if (deleteOrders.isEmpty()) {
-                return new ResponseEntity<>("Empty product list", HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>("Empty list", HttpStatus.NO_CONTENT);
             }
             orderingRepository.deleteAll();
             return new ResponseEntity<>("Delete all successfully", HttpStatus.OK);
@@ -139,6 +140,7 @@ public class OrderingController {
         }
     }
 
+
     //UPDATE AN ORDER
     @PutMapping("/orders/{id}")
     public ResponseEntity<Ordering> updateOrderById(@PathVariable("id") long id, @RequestBody Ordering ordering) {
@@ -152,7 +154,6 @@ public class OrderingController {
             _ordering.setOrderedDate(ordering.getOrderedDate());
             _ordering.setStaff(ordering.getStaff());
             _ordering.setProvider(ordering.getProvider());
-            _ordering.setOrderDetailList(ordering.getOrderDetailList());
 
             orderingRepository.save(_ordering);
 
