@@ -94,7 +94,7 @@ public class DeliveryNoteController {
 
     // UPDATE
     @PutMapping("/deliveryNote/{id}")
-    public ResponseEntity<DeliveryNote> updateCustomerById(@PathVariable("id") long id, @RequestBody DeliveryNote deliveryNote) {
+    public ResponseEntity<DeliveryNote> updateDeliveryNoteById(@PathVariable("id") long id, @RequestBody DeliveryNote deliveryNote) {
         Optional<DeliveryNote> updatedSaleDetail = deliveryNoteRepository.findById(id);
         try {
             if (updatedSaleDetail.isPresent()) {

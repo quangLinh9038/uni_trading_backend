@@ -46,7 +46,6 @@ public class SaleInvoiceService {
                 saleInvoice.setCustomer(_customer);
 
                 saleInvoiceList.add(saleInvoice);
-
             }
             System.out.println("Staff or Customer not found");
         }

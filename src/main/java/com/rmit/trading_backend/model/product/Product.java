@@ -50,10 +50,6 @@ public class Product {
     @JsonIgnore
     private DeliveryDetail deliveryDetail;
 
-//     mapping product info to Sale Invoice
-//    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-//    private List<SaleDetail> saleDetailList;
-
     public Product() {
     }
 

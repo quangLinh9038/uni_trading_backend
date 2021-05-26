@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "delivery_note")
+@Table(name = "deliveryNote")
 public class DeliveryNote {
 
     @Id
@@ -32,9 +32,9 @@ public class DeliveryNote {
     private Staff staff;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "delivery_note", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "deliveryNote", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<DeliveryDetail> deliveryDetails = new ArrayList<>();
+    private List<DeliveryDetail> deliveryDetailList = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -65,10 +65,10 @@ public class DeliveryNote {
     }
 
     public List<DeliveryDetail> getDeliveryDetail() {
-        return deliveryDetails;
+        return deliveryDetailList;
     }
 
     public void setDeliveryDetail(List<DeliveryDetail> deliveryDetails) {
-        this.deliveryDetails = deliveryDetails;
+        this.deliveryDetailList = deliveryDetails;
     }
 }

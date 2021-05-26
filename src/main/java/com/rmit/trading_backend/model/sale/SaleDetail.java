@@ -81,4 +81,5 @@ public class SaleDetail {
     public void setProduct(Product product) {
         this.product = product;
     }
+
 }
