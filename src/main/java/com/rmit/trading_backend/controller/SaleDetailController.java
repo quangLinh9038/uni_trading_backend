@@ -1,8 +1,6 @@
 package com.rmit.trading_backend.controller;
 
-import com.rmit.trading_backend.model.product.Product;
 import com.rmit.trading_backend.model.sale.SaleDetail;
-import com.rmit.trading_backend.repository.SaleInvoiceRepository;
 import com.rmit.trading_backend.repository.SaleDetailRepository;
 import com.rmit.trading_backend.service.SaleDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,14 +92,13 @@ public class SaleDetailController {
 
     // UPDATE
     @PutMapping("/saleDetails/{id}")
-    public ResponseEntity<SaleDetail> updateCustomerById(@PathVariable("id") long id, @RequestBody SaleDetail saleDetail) {
+    public ResponseEntity<SaleDetail> updateSaleDetailById(@PathVariable("id") long id, @RequestBody SaleDetail saleDetail) {
         Optional<SaleDetail> updatedSaleDetail = saleDetailRepository.findById(id);
         try {
             if (updatedSaleDetail.isPresent()) {
 
                 SaleDetail _saleDetail = updatedSaleDetail.get();
 
-                _saleDetail.setSaleInvoice(saleDetail.getSaleInvoice());
                 _saleDetail.setProduct(saleDetail.getProduct());
                 _saleDetail.setQuantity(saleDetail.getQuantity());
                 _saleDetail.setPrice(saleDetail.getPrice());

@@ -64,11 +64,11 @@ public class DeliveryNote {
         this.staff = staff;
     }
 
-    public List<DeliveryDetail> getDeliveryDetails() {
+    public List<DeliveryDetail> getDeliveryDetail() {
         return deliveryDetails;
     }
 
-    public void setDeliveryDetails(List<DeliveryDetail> deliveryDetails) {
+    public void setDeliveryDetail(List<DeliveryDetail> deliveryDetails) {
         this.deliveryDetails = deliveryDetails;
     }
 }

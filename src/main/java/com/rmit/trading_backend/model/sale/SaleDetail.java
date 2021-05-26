@@ -6,7 +6,7 @@ import com.rmit.trading_backend.model.product.Product;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "saledetail")
+@Table(name = "sale_detail")
 public class SaleDetail {
 
     @Id

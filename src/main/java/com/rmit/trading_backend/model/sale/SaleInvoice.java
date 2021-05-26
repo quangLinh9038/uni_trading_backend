@@ -24,6 +24,9 @@ public class SaleInvoice {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date date;
 
+    @Column(name = "total_price")
+    private long totalPrice;
+
     @ManyToOne
     private Customer customer;
 
@@ -75,5 +78,21 @@ public class SaleInvoice {
 
     public void setSaleDetailList(List<SaleDetail> saleDetailList) {
         this.saleDetailList = saleDetailList;
+    }
+
+    public long getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(long totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public DeliveryNote getDeliveryNode() {
+        return deliveryNode;
+    }
+
+    public void setDeliveryNode(DeliveryNote deliveryNode) {
+        this.deliveryNode = deliveryNode;
     }
 }

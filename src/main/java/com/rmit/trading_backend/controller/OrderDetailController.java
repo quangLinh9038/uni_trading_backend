@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("/api")
 public class OrderDetailController {
 
-
     @Autowired
     private OrderDetailRepository orderDetailRepository;
 
