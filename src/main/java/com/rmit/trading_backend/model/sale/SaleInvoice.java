@@ -1,5 +1,6 @@
 package com.rmit.trading_backend.model.sale;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.actor.Customer;
 import com.rmit.trading_backend.model.actor.Staff;
@@ -7,10 +8,11 @@ import com.rmit.trading_backend.model.actor.Staff;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "sale")
+@Table(name = "sale_invoice")
 public class SaleInvoice {
 
     @Id
@@ -19,7 +21,8 @@ public class SaleInvoice {
     private long id;
 
     @Column
-    private LocalDate date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private Date date;
 
     @ManyToOne
     private Customer customer;
@@ -27,9 +30,13 @@ public class SaleInvoice {
     @ManyToOne
     private Staff staff;
 
-    @OneToMany(mappedBy = "saleInvoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "saleInvoice", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<SaleDetail> saleDetailList = new ArrayList<>();
+
+    @OneToOne
+    @JsonIgnore
+    private DeliveryNote deliveryNode;
 
     public SaleInvoice() {
     }
@@ -38,11 +45,11 @@ public class SaleInvoice {
         return id;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

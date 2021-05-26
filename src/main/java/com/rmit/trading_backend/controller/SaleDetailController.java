@@ -22,9 +22,6 @@ public class SaleDetailController {
     private SaleDetailRepository saleDetailRepository;
 
     @Autowired
-    private SaleInvoiceRepository saleInvoiceRepository;
-
-    @Autowired
     private SaleDetailService saleDetailService;
 
     // GET ALL SALE DETAILS
@@ -56,13 +53,12 @@ public class SaleDetailController {
 
     // POST DETAILS TO A SALE INVOICE
     @PostMapping("/saleDetails")
-    public ResponseEntity<List<SaleDetail>> addDetails(@RequestBody List<SaleDetail> details) {
+    public ResponseEntity<SaleDetail> addDetails(@RequestBody SaleDetail saleDetail) {
 
         try {
-            if (saleDetailService.addInvoiceDetail(details)) {
-                return new ResponseEntity<>(details, HttpStatus.CREATED);
-            }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            saleDetailService.addSaleDetail(saleDetail);
+            return new ResponseEntity<>(saleDetail, HttpStatus.CREATED);
+
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
