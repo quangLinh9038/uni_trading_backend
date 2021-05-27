@@ -13,6 +13,7 @@ public class TradingBackendApplication {
         SpringApplication.run(TradingBackendApplication.class, args);
     }
 
+    // setting UTC timezone for the project
     @PostConstruct
     void init() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
