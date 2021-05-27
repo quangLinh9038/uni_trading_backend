@@ -26,9 +26,10 @@ public class OrderDetailService {
     private ProductRepository productRepository;
 
     // ADD NEW ORDER DETAILS
-    public void createOrderDetail(OrderDetail od) {
+    public OrderDetail createOrderDetail(OrderDetail od) {
 
         Optional<Ordering> orderData = orderingRepository.findById(od.getOrdering().getId());
+        System.out.println(orderData);
 
         Optional<Product> productData = productRepository.findById(od.getProduct().getId());
         System.out.println("productData:" + productData);
@@ -38,7 +39,6 @@ public class OrderDetailService {
             Ordering _order = orderData.get();
             Product _product = productData.get();
 
-            System.out.println("_product" + _product);
             od.setOrdering(_order);
             od.setProduct(_product);
             od.setTotalPrice(_product.getPrice() * od.getQuantity());
@@ -49,6 +49,7 @@ public class OrderDetailService {
         } else {
             System.out.println("Product or Order not found");
         }
+        return od;
     }
 }
 

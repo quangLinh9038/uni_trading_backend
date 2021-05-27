@@ -75,4 +75,6 @@ public class ReceivedDetailsController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.rmit.trading_backend.ordering.controller;
 
 import com.rmit.trading_backend.ordering.model.OrderDetail;
+import com.rmit.trading_backend.ordering.model.Ordering;
 import com.rmit.trading_backend.ordering.repository.OrderDetailRepository;
 import com.rmit.trading_backend.ordering.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class OrderDetailController {
     @Autowired
     private OrderDetailService orderDetailService;
 
-
+    // GET ALL ORDER DETAILS
     @GetMapping("/orderDetails")
     public ResponseEntity<List<OrderDetail>> getAllCategory() {
         try {
@@ -55,15 +56,29 @@ public class OrderDetailController {
     @DeleteMapping("/orderDetails")
     public ResponseEntity<String> deleteAllOd() {
         try {
-            List<OrderDetail> deleteOd = orderDetailRepository.findAll();
-
-            if (deleteOd.isEmpty()) {
-                return new ResponseEntity<>("Empty product list", HttpStatus.NO_CONTENT);
-            }
             orderDetailRepository.deleteAll();
             return new ResponseEntity<>("Delete all successfully", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //DELETE ONE
+    @DeleteMapping("/orderDetails/{id}")
+    public ResponseEntity<String> deleteOrderDetailById(@PathVariable("id") int id) {
+        try {
+
+            Optional<OrderDetail> checkOd = orderDetailRepository.findById(id);
+
+            if (checkOd.isPresent()) {
+                orderDetailRepository.deleteById(id);
+
+                return new ResponseEntity<>("Success", HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Order not found", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

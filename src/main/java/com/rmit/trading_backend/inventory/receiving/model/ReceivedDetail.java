@@ -1,6 +1,8 @@
 package com.rmit.trading_backend.inventory.receiving.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rmit.trading_backend.ordering.model.OrderDetail;
 import com.rmit.trading_backend.product.model.Product;
 
@@ -25,7 +27,8 @@ public class ReceivedDetail {
     @JoinColumn(name = "order_details_id")
     private OrderDetail orderDetail;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = "receivedDetails", allowSetters = true)
     private ReceivedNote receivedNote;
 
     public long getId() {

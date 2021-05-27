@@ -42,20 +42,12 @@ public class ReceivedNoteController {
         }
     }
 
-    // TODO: GET ALL NOTES BY FILTERING DATE
-    // get all order by Date
-
+    // GET ALL RECEIVED NOTES
     @GetMapping("/receivedNotesByDate")
     public ResponseEntity<List<ReceivedNote>> getReceivedNotesByDate(
             @RequestParam("receivedDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date receivedDate) {
         try {
-//            List<ReceivedNote> results = receivedNoteRepository.findAllByReceivedDate(receivedDate);
-//
-//
-//
-//            if(results.isEmpty()){
-//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//            }
+
             return new ResponseEntity<>(receivedNoteRepository.findAllByReceivedDate(receivedDate), HttpStatus.OK);
 
         } catch (Exception e) {
@@ -63,6 +55,21 @@ public class ReceivedNoteController {
 
         }
     }
+
+    //TODO: List all received note by a period:
+    @GetMapping("/receivedNoteInPeriod")
+    public ResponseEntity<List<ReceivedNote>> getReceivedNotesInAPeriod(
+            @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate
+    ){
+        try{
+            return new ResponseEntity<>(receivedNoteRepository.findAllByReceivedDateBetween(startDate, endDate), HttpStatus.OK);
+        } catch (Exception e){
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     // CREATE A NEW RECEIVED NOTES
     // ADD ONE

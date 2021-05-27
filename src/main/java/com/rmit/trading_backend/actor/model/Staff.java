@@ -23,7 +23,8 @@ public class Staff extends Person {
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "staff")
     @JsonIgnore
-    private final List<ReceivedNote> receivedNotes = new ArrayList<>();
+    private List<ReceivedNote> receivedNotes = new ArrayList<>();
+
     // one staff can make many orders
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "staff")
@@ -37,6 +38,8 @@ public class Staff extends Person {
 //    @JsonIgnore
 //    private List<SaleInvoice> saleInvoiceList = new ArrayList<>();
 
+    // TODO: SaleInvoice mapping
+
     public Staff() {
     }
 
@@ -48,5 +51,11 @@ public class Staff extends Person {
         this.orderingList = orderingList;
     }
 
+    public List<ReceivedNote> getReceivedNotes() {
+        return receivedNotes;
+    }
 
+    public void setReceivedNotes(List<ReceivedNote> receivedNotes) {
+        this.receivedNotes = receivedNotes;
+    }
 }

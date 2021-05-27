@@ -11,12 +11,14 @@ import java.util.List;
 @Table(name = "customer")
 public class Customer extends Person {
 
+    @Column
+    private String contact_person;
+
     // one customer can receive many sale invoices
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     @JsonIgnore
     private final List<SaleInvoice> saleInvoiceList = new ArrayList<>();
-    @Column
-    private String contact_person;
+
 
     public Customer() {
     }
@@ -29,6 +31,8 @@ public class Customer extends Person {
         this.contact_person = contact_person;
     }
 
-
+    public List<SaleInvoice> getSaleInvoiceList() {
+        return saleInvoiceList;
+    }
 }
 

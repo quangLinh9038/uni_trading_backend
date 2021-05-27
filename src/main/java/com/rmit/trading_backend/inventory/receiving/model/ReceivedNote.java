@@ -3,6 +3,7 @@ package com.rmit.trading_backend.inventory.receiving.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rmit.trading_backend.actor.model.Staff;
 import com.rmit.trading_backend.ordering.model.Ordering;
 import org.hibernate.annotations.LazyCollection;
@@ -32,9 +33,8 @@ public class ReceivedNote {
     @JoinColumn(name = "order_id")
     private Ordering order;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "receivedNote", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @OneToMany(mappedBy = "receivedNote", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = "receivedNote", allowSetters = true)
     private List<ReceivedDetail> receivedDetails = new ArrayList<>();
 
     public long getId() {

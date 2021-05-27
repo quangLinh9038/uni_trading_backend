@@ -2,9 +2,12 @@ package com.rmit.trading_backend.ordering.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rmit.trading_backend.actor.model.Provider;
 import com.rmit.trading_backend.actor.model.Staff;
 import com.rmit.trading_backend.inventory.receiving.model.ReceivedNote;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,8 +36,9 @@ public class Ordering {
     @ManyToOne
     private Staff staff;
 
-    @OneToMany(mappedBy = "ordering", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonIgnore
+//    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "ordering", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value = "ordering", allowSetters = true)
     private List<OrderDetail> orderDetailList = new ArrayList<>();
 
     // mapping to ReceivedNote

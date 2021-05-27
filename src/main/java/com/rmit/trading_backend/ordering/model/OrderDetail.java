@@ -1,6 +1,7 @@
 package com.rmit.trading_backend.ordering.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rmit.trading_backend.inventory.receiving.model.ReceivedDetail;
 import com.rmit.trading_backend.product.model.Product;
 
@@ -20,7 +21,10 @@ public class OrderDetail {
     @Column
     private long totalPrice;
 
-    @ManyToOne
+    // JsonIgnoreProperties make sure serialize cycle won't happen
+    // whenever starting fetching from parent or child entities
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = "orderDetailList", allowSetters = true)
     private Ordering ordering;
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -58,14 +62,6 @@ public class OrderDetail {
         this.totalPrice = totalPrice;
     }
 
-    public Ordering getOrdering() {
-        return ordering;
-    }
-
-    public void setOrdering(Ordering ordering) {
-        this.ordering = ordering;
-    }
-
     public Product getProduct() {
         return product;
     }
@@ -80,5 +76,13 @@ public class OrderDetail {
 
     public void setReceivedDetail(ReceivedDetail receivedDetail) {
         this.receivedDetail = receivedDetail;
+    }
+
+    public Ordering getOrdering() {
+        return ordering;
+    }
+
+    public void setOrdering(Ordering ordering) {
+        this.ordering = ordering;
     }
 }
