@@ -15,8 +15,6 @@ public class Customer extends Person {
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<SaleInvoice> saleInvoiceList = new ArrayList<>();
 
-    // TODO: mapping to DELIVERY NOTE
-
     @Column
     private String contact_person;
 
