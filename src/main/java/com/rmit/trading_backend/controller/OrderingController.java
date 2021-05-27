@@ -4,16 +4,18 @@ package com.rmit.trading_backend.controller;
 import com.rmit.trading_backend.model.actor.Provider;
 import com.rmit.trading_backend.model.actor.Staff;
 import com.rmit.trading_backend.model.ordering.Ordering;
-import com.rmit.trading_backend.repository.ProviderRepository;
+import com.rmit.trading_backend.repository.actor.repository.ProviderRepository;
 import com.rmit.trading_backend.repository.actor.repository.StaffRepository;
-import com.rmit.trading_backend.repository.product.repository.OrderingRepository;
+import com.rmit.trading_backend.repository.OrderingRepository;
 import com.rmit.trading_backend.service.OrderingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,10 +45,12 @@ public class OrderingController {
             if (staffName == null) {
                 orderingRepository.findAll().forEach(orderings::add);
             } else {
-                Optional<Staff> staff = staffRepository.findStaffByNameContains(staffName);
-
                 // find order by staff name
-                orderingRepository.findAllByStaff(staff).forEach(orderings::add);
+                Optional<Staff> staff = staffRepository.findStaffByNameContains(staffName);
+                if(staff.isPresent()){
+                    Staff _staff = staff.get();
+                    orderingRepository.findAllByStaff(_staff).forEach(orderings::add);
+                }
             }
 
             if (orderings.isEmpty()) {
@@ -86,6 +90,23 @@ public class OrderingController {
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/ordersByDate")
+    public ResponseEntity<List<Ordering>> getOrdersByDate(
+                            @RequestParam("orderedDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date orderedDate){
+        try{
+//            List<Ordering> results = orderingRepository.findAllByOrderedDate(orderedDate);
+//
+//            if(results.isEmpty()){
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+            return new ResponseEntity<>(orderingRepository.findAllByOrderedDate(orderedDate), HttpStatus.OK);
+
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
     }
 

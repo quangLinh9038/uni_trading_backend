@@ -1,13 +1,16 @@
 package com.rmit.trading_backend.controller.inventory.controller;
 
-import com.rmit.trading_backend.model.ordering.ReceivedNote;
+import com.rmit.trading_backend.model.inventory.ReceivedNote;
+import com.rmit.trading_backend.model.ordering.Ordering;
 import com.rmit.trading_backend.repository.inventory.repository.ReceivedNoteRepository;
 import com.rmit.trading_backend.service.ReceivedNoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +44,26 @@ public class ReceivedNoteController {
     }
 
     // TODO: GET ALL NOTES BY FILTERING DATE
+    // get all order by Date
 
+    @GetMapping("/receivedNotesByDate")
+    public ResponseEntity<List<ReceivedNote>> getReceivedNotesByDate(
+            @RequestParam("receivedDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date receivedDate){
+        try{
+//            List<ReceivedNote> results = receivedNoteRepository.findAllByReceivedDate(receivedDate);
+//
+//
+//
+//            if(results.isEmpty()){
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+            return new ResponseEntity<>(receivedNoteRepository.findAllByReceivedDate(receivedDate), HttpStatus.OK);
+
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+    }
 
     // CREATE A NEW RECEIVED NOTES
     // ADD ONE

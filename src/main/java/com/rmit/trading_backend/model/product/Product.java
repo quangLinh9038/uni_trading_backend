@@ -2,7 +2,7 @@ package com.rmit.trading_backend.model.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.ordering.OrderDetail;
-import com.rmit.trading_backend.model.ordering.ReceivedDetail;
+import com.rmit.trading_backend.model.inventory.ReceivedDetail;
 
 import javax.persistence.*;
 import java.io.Serializable;

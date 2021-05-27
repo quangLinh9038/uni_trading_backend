@@ -2,7 +2,7 @@ package com.rmit.trading_backend.controller;
 
 import com.rmit.trading_backend.model.product.Category;
 import com.rmit.trading_backend.model.product.Product;
-import com.rmit.trading_backend.repository.actor.repository.ProductRepository;
+import com.rmit.trading_backend.repository.product.repository.ProductRepository;
 import com.rmit.trading_backend.repository.product.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

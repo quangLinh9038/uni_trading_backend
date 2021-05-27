@@ -4,9 +4,9 @@ package com.rmit.trading_backend.service;
 import com.rmit.trading_backend.model.actor.Provider;
 import com.rmit.trading_backend.model.actor.Staff;
 import com.rmit.trading_backend.model.ordering.Ordering;
-import com.rmit.trading_backend.repository.ProviderRepository;
+import com.rmit.trading_backend.repository.actor.repository.ProviderRepository;
 import com.rmit.trading_backend.repository.actor.repository.StaffRepository;
-import com.rmit.trading_backend.repository.product.repository.OrderingRepository;
+import com.rmit.trading_backend.repository.OrderingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

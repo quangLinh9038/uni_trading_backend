@@ -2,7 +2,7 @@ package com.rmit.trading_backend.model.actor;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.ordering.Ordering;
-import com.rmit.trading_backend.model.ordering.ReceivedNote;
+import com.rmit.trading_backend.model.inventory.ReceivedNote;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 

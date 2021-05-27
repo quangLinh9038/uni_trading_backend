@@ -1,4 +1,4 @@
-package com.rmit.trading_backend.repository;
+package com.rmit.trading_backend.repository.actor.repository;
 
 import com.rmit.trading_backend.model.actor.Provider;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,8 +1,8 @@
-package com.rmit.trading_backend.model.ordering;
+package com.rmit.trading_backend.model.inventory;
 
 
+import com.rmit.trading_backend.model.ordering.OrderDetail;
 import com.rmit.trading_backend.model.product.Product;
-import org.hibernate.criterion.Order;
 
 import javax.persistence.*;
 
