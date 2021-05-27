@@ -61,10 +61,10 @@ public class ReceivedNoteController {
     public ResponseEntity<List<ReceivedNote>> getReceivedNotesInAPeriod(
             @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
             @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate
-    ){
-        try{
+    ) {
+        try {
             return new ResponseEntity<>(receivedNoteRepository.findAllByReceivedDateBetween(startDate, endDate), HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
