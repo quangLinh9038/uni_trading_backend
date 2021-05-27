@@ -2,7 +2,7 @@ package com.rmit.trading_backend.controller;
 
 import com.rmit.trading_backend.model.product.Category;
 import com.rmit.trading_backend.model.product.Product;
-import com.rmit.trading_backend.repository.actor.repository.ProductRepository;
+import com.rmit.trading_backend.repository.product.repository.ProductRepository;
 import com.rmit.trading_backend.repository.product.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -109,7 +109,7 @@ public class ProductController {
 
     // DELETE ONE PRODUCT
     @DeleteMapping("/products/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable("id") int id) {
+    public ResponseEntity<String> deleteProduct(@PathVariable("id") long id) {
         try {
             if (productRepository.findById(id).isPresent()) {
                 productRepository.deleteById(id);
@@ -137,7 +137,7 @@ public class ProductController {
 
     // UPDATE
     @PutMapping("products/{id}")
-    public ResponseEntity<Product> updateCustomerById(@PathVariable("id") int id, @RequestBody Product product) {
+    public ResponseEntity<Product> updateCustomerById(@PathVariable("id") long id, @RequestBody Product product) {
         Optional<Product> updatedProduct = productRepository.findById(id);
         try {
             if (updatedProduct.isPresent()) {

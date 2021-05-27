@@ -1,7 +1,7 @@
 package com.rmit.trading_backend.service;
 
 import com.rmit.trading_backend.model.ordering.OrderDetail;
-import com.rmit.trading_backend.model.ordering.ReceivedDetail;
+import com.rmit.trading_backend.model.inventory.ReceivedDetail;
 import com.rmit.trading_backend.repository.OrderDetailRepository;
 import com.rmit.trading_backend.repository.inventory.repository.ReceivedDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;

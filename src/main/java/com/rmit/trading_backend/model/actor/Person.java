@@ -8,7 +8,7 @@ public abstract class Person {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column
     private String name;
@@ -29,7 +29,7 @@ public abstract class Person {
 
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

@@ -2,7 +2,8 @@ package com.rmit.trading_backend.model.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.ordering.OrderDetail;
-import com.rmit.trading_backend.model.ordering.ReceivedDetail;
+import com.rmit.trading_backend.model.sale.DeliveryDetail;
+import com.rmit.trading_backend.model.sale.SaleDetail;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -43,7 +44,11 @@ public class Product implements Serializable {
 
     @OneToOne
     @JsonIgnore
-    private ReceivedDetail receivedDetail;
+    private SaleDetail saleDetail;
+
+    @OneToOne
+    @JsonIgnore
+    private DeliveryDetail deliveryDetail;
 
     public Product() {
     }

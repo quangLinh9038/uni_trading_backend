@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface StaffRepository extends JpaRepository<Staff, Integer> {
+public interface StaffRepository extends JpaRepository<Staff, Long> {
+
 
     Optional<Staff> findStaffByEmail(String email);
 

@@ -1,9 +1,10 @@
-package com.rmit.trading_backend.model.ordering;
+package com.rmit.trading_backend.model.inventory;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rmit.trading_backend.model.actor.Staff;
+import com.rmit.trading_backend.model.ordering.Ordering;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -21,7 +22,7 @@ public class ReceivedNote {
     private long id;
 
     @Column
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date receivedDate;
 
     @ManyToOne

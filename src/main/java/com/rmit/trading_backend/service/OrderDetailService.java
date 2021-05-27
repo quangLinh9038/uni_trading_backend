@@ -4,8 +4,8 @@ import com.rmit.trading_backend.model.ordering.OrderDetail;
 import com.rmit.trading_backend.model.ordering.Ordering;
 import com.rmit.trading_backend.model.product.Product;
 import com.rmit.trading_backend.repository.OrderDetailRepository;
-import com.rmit.trading_backend.repository.actor.repository.ProductRepository;
-import com.rmit.trading_backend.repository.product.repository.OrderingRepository;
+import com.rmit.trading_backend.repository.product.repository.ProductRepository;
+import com.rmit.trading_backend.repository.OrderingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -2,12 +2,10 @@ package com.rmit.trading_backend.controller.inventory.controller;
 
 
 import com.rmit.trading_backend.model.ordering.OrderDetail;
-import com.rmit.trading_backend.model.ordering.ReceivedDetail;
+import com.rmit.trading_backend.model.inventory.ReceivedDetail;
 import com.rmit.trading_backend.repository.OrderDetailRepository;
 import com.rmit.trading_backend.repository.inventory.repository.ReceivedDetailRepository;
 import com.rmit.trading_backend.service.ReceivedDetailService;
-import com.rmit.trading_backend.service.ReceivedNoteService;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

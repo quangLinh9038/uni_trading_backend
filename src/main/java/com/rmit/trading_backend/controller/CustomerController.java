@@ -89,7 +89,7 @@ public class CustomerController {
 
     // DELETE ONE
     @DeleteMapping("/customers/{id}")
-    public ResponseEntity<String> deleteCustomer(@PathVariable("id") int id) {
+    public ResponseEntity<String> deleteCustomer(@PathVariable("id") Long id) {
         try {
             if (customerRepository.findById(id).isPresent()) {
                 customerRepository.deleteById(id);
@@ -117,7 +117,7 @@ public class CustomerController {
 
     // UPDATE
     @PutMapping("customers/{id}")
-    public ResponseEntity<Customer> updateCustomerById(@PathVariable("id") int id, @RequestBody Customer customer) {
+    public ResponseEntity<Customer> updateCustomerById(@PathVariable("id") Long id, @RequestBody Customer customer) {
         Optional<Customer> updatedCustomer = customerRepository.findById(id);
 
         if (updatedCustomer.isPresent()) {
