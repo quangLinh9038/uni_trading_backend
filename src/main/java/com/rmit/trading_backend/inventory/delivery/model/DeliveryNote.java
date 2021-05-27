@@ -2,6 +2,7 @@ package com.rmit.trading_backend.inventory.delivery.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rmit.trading_backend.actor.model.Staff;
 import com.rmit.trading_backend.sale.model.SaleInvoice;
 import org.hibernate.annotations.LazyCollection;
@@ -32,10 +33,8 @@ public class DeliveryNote {
     @ManyToOne
     private Staff staff;
 
-    //TODO: update as ReceivedNote
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "deliveryNote", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @OneToMany(mappedBy = "deliveryNote", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = "receivedNote", allowSetters = true)
     private List<DeliveryDetail> deliveryDetailList = new ArrayList<>();
 
     public long getId() {
@@ -66,6 +65,7 @@ public class DeliveryNote {
         this.staff = staff;
     }
 
+    @JsonIgnore
     public List<DeliveryDetail> getDeliveryDetail() {
         return deliveryDetailList;
     }
