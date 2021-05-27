@@ -15,8 +15,7 @@ public class Customer extends Person {
     private String contact_person;
 
     // one customer can receive many sale invoices
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
-    @JsonIgnore
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private final List<SaleInvoice> saleInvoiceList = new ArrayList<>();
 
 

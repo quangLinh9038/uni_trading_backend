@@ -3,11 +3,15 @@ package com.rmit.trading_backend.inventory.delivery.controller;
 import com.rmit.trading_backend.inventory.delivery.model.DeliveryNote;
 import com.rmit.trading_backend.inventory.delivery.repository.DeliveryNoteRepository;
 import com.rmit.trading_backend.inventory.delivery.service.DeliveryNoteService;
+import com.rmit.trading_backend.inventory.receiving.model.ReceivedNote;
+import com.rmit.trading_backend.sale.model.SaleInvoice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,9 +53,30 @@ public class DeliveryNoteController {
         }
     }
 
-    // TODO: filtering delivery note by date
+    // GET ALL SALE INVOICE BY DATE
+    @GetMapping("/deliveryNoteByDate")
+    public ResponseEntity<List<DeliveryNote>> getSaleInvoiceByDate(
+            @RequestParam("deliveryDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+        try {
+            return new ResponseEntity<>(deliveryNoteRepository.findAllByDeliveryDate(date), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
-    // TODO: list all delivery note by period
+        }
+    }
+
+    //GET ALL DELIVERY NOTE BY A PERIOD
+    @GetMapping("/deliveryNoteInPeriod")
+    public ResponseEntity<List<DeliveryNote>> getDeliveryNoteInAPeriod(
+            @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
+        try{
+            return new ResponseEntity<>(deliveryNoteRepository.findAllByDeliveryDateBetween(startDate, endDate), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     // POST DETAILS TO A SALE INVOICE
     @PostMapping("/deliveryNote")
@@ -97,11 +122,11 @@ public class DeliveryNoteController {
     // UPDATE
     @PutMapping("/deliveryNote/{id}")
     public ResponseEntity<DeliveryNote> updateDeliveryNoteById(@PathVariable("id") long id, @RequestBody DeliveryNote deliveryNote) {
-        Optional<DeliveryNote> updatedSaleDetail = deliveryNoteRepository.findById(id);
+        Optional<DeliveryNote> updatedDeliveryNote = deliveryNoteRepository.findById(id);
         try {
-            if (updatedSaleDetail.isPresent()) {
+            if (updatedDeliveryNote.isPresent()) {
 
-                DeliveryNote _deliveryNote = updatedSaleDetail.get();
+                DeliveryNote _deliveryNote = updatedDeliveryNote.get();
 
                 _deliveryNote.setSaleInvoice(deliveryNote.getSaleInvoice());
                 _deliveryNote.setDeliveryDate(deliveryNote.getDeliveryDate());

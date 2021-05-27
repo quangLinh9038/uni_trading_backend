@@ -2,6 +2,7 @@ package com.rmit.trading_backend.sale.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rmit.trading_backend.actor.model.Customer;
 import com.rmit.trading_backend.actor.model.Staff;
 import com.rmit.trading_backend.inventory.delivery.model.DeliveryNote;
@@ -21,7 +22,8 @@ public class SaleInvoice {
     private long id;
 
     @Column
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
     @Column(name = "total_price")
@@ -33,9 +35,8 @@ public class SaleInvoice {
     @ManyToOne
     private Staff staff;
 
-    //TODO mapping as Order
     @OneToMany(mappedBy = "saleInvoice", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
+    @JsonIgnoreProperties(value = "saleInvoice", allowSetters = true)
     private List<SaleDetail> saleDetailList = new ArrayList<>();
 
     @OneToOne
@@ -93,12 +94,12 @@ public class SaleInvoice {
         this.totalPrice = totalPrice;
     }
 
-    public DeliveryNote getDeliveryNode() {
+    public DeliveryNote getDeliveryNote() {
         return deliveryNote;
     }
 
-    public void setDeliveryNode(DeliveryNote deliveryNode) {
-        this.deliveryNote = deliveryNode;
+    public void setDeliveryNote(DeliveryNote deliveryNote) {
+        this.deliveryNote = deliveryNote;
     }
 
 
