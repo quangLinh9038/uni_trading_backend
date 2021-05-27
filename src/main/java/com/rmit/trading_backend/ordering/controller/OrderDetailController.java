@@ -1,7 +1,6 @@
 package com.rmit.trading_backend.ordering.controller;
 
 import com.rmit.trading_backend.ordering.model.OrderDetail;
-import com.rmit.trading_backend.ordering.model.Ordering;
 import com.rmit.trading_backend.ordering.repository.OrderDetailRepository;
 import com.rmit.trading_backend.ordering.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;

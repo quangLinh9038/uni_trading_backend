@@ -2,7 +2,6 @@ package com.rmit.trading_backend.inventory.receiving.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rmit.trading_backend.ordering.model.OrderDetail;
 import com.rmit.trading_backend.product.model.Product;
 

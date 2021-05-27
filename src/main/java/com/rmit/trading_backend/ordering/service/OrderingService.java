@@ -5,7 +5,6 @@ import com.rmit.trading_backend.actor.model.Provider;
 import com.rmit.trading_backend.actor.model.Staff;
 import com.rmit.trading_backend.actor.repository.ProviderRepository;
 import com.rmit.trading_backend.actor.repository.StaffRepository;
-import com.rmit.trading_backend.ordering.model.OrderDetail;
 import com.rmit.trading_backend.ordering.model.Ordering;
 import com.rmit.trading_backend.ordering.repository.OrderingRepository;
 import org.springframework.beans.factory.annotation.Autowired;

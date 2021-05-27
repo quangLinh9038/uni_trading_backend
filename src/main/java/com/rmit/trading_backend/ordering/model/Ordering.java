@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rmit.trading_backend.actor.model.Provider;
 import com.rmit.trading_backend.actor.model.Staff;
 import com.rmit.trading_backend.inventory.receiving.model.ReceivedNote;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -36,8 +34,8 @@ public class Ordering {
     @ManyToOne
     private Staff staff;
 
-//    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "ordering", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    //    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "ordering", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = "ordering", allowSetters = true)
     private List<OrderDetail> orderDetailList = new ArrayList<>();
 
