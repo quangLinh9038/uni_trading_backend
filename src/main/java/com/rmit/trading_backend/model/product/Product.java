@@ -6,15 +6,15 @@ import com.rmit.trading_backend.model.sale.DeliveryDetail;
 import com.rmit.trading_backend.model.sale.SaleDetail;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "product")
-public class Product {
+public class Product implements Serializable {
 
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @Column
     private String name;
@@ -37,8 +37,8 @@ public class Product {
     @ManyToOne
     private Category category;
 
+    // mapping to orderDetail
     @OneToOne
-    @PrimaryKeyJoinColumn
     @JsonIgnore
     private OrderDetail orderDetail;
 
@@ -57,7 +57,7 @@ public class Product {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -125,12 +125,12 @@ public class Product {
         this.orderDetail = orderDetail;
     }
 
-    //
-//    public List<SaleDetail> getSaleDetailList() {
-//        return saleDetailList;
-//    }
-//
-//    public void setSaleDetailList(List<SaleDetail> saleDetailList) {
-//        this.saleDetailList = saleDetailList;
-//    }
+    public ReceivedDetail getReceivedDetail() {
+        return receivedDetail;
+    }
+
+    public void setReceivedDetail(ReceivedDetail receivedDetail) {
+        this.receivedDetail = receivedDetail;
+    }
 }
+

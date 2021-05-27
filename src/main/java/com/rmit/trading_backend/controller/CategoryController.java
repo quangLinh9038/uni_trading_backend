@@ -1,7 +1,7 @@
 package com.rmit.trading_backend.controller;
 
 import com.rmit.trading_backend.model.product.Category;
-import com.rmit.trading_backend.repository.CategoryRepository;
+import com.rmit.trading_backend.repository.product.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +21,10 @@ public class CategoryController {
     @GetMapping("/categories")
     public ResponseEntity<List<Category>> getAllCategory() {
         try {
-
-            List<Category> categories = categoryRepository.findAll();
-
-            if (categories.isEmpty()) {
+            if (categoryRepository.findAll().isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(categories, HttpStatus.OK);
+            return new ResponseEntity<>(categoryRepository.findAll(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -43,4 +40,6 @@ public class CategoryController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }
+

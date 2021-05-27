@@ -1,14 +1,15 @@
 package com.rmit.trading_backend.controller;
 
+import com.rmit.trading_backend.model.product.Category;
 import com.rmit.trading_backend.model.product.Product;
-import com.rmit.trading_backend.repository.CategoryRepository;
-import com.rmit.trading_backend.repository.ProductRepository;
-import com.rmit.trading_backend.service.ProductService;
+import com.rmit.trading_backend.repository.product.repository.ProductRepository;
+import com.rmit.trading_backend.repository.product.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,14 +19,9 @@ import java.util.Optional;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
-
+    CategoryRepository categoryRepository;
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
 
     //GET ALL PRODUCTS
     @GetMapping("/products")
@@ -43,12 +39,14 @@ public class ProductController {
 
     //GET PRODUCT BY NAME
     @GetMapping("/productByName/{name}")
-    public ResponseEntity<List<Product>> getProductByName(@PathVariable("name") String name) {
+    public ResponseEntity<Optional<Product>> getProductByName(@PathVariable("name") String name) {
         try {
-            if (productRepository.findProductByNameContaining(name).isEmpty()) {
+            Optional<Product> product = productRepository.findProductByNameContaining(name);
+
+            if (product.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(productRepository.findProductByNameContaining(name), HttpStatus.OK);
+            return new ResponseEntity<>(product, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -67,43 +65,43 @@ public class ProductController {
         }
     }
 
-    //GET PRODUCT BY CATEGORY ID
-    @GetMapping("/productByCategoryId/{id}")
-    public ResponseEntity<List<Product>> getProductByCategory(@PathVariable(value = "id") int categoryID) {
-        try {
-            if (productRepository.findAllProductByCategoryId(categoryID).isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(productRepository.findAllProductByCategoryId(categoryID), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 
     //GET PRODUCT BY CATEGORY NAME
     @GetMapping("/productByCategoryName/{name}")
     public ResponseEntity<List<Product>> getProductByCategory(@PathVariable(value = "name") String categoryName) {
         try {
-            if (productRepository.findAllProductByCategoryName(categoryName).isEmpty()) {
+            if (productRepository.findAllProductByCategoryContaining(categoryName).isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(productRepository.findAllProductByCategoryName(categoryName), HttpStatus.OK);
+            return new ResponseEntity<>(productRepository.findAllProductByCategoryContaining(categoryName), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-
     // POST list of products
     @PostMapping("/products")
-    public ResponseEntity<List<Product>> addList(@RequestBody List<Product> products) {
+    public ResponseEntity<List<Product>> addProducts(@RequestBody List<Product> products) {
 
         try {
-            if (productService.addProduct(products)) {
-                return new ResponseEntity<>(products, HttpStatus.CREATED);
+            List<Product> newProducts = new ArrayList<>();
+
+            for (Product product : products) {
+
+                Optional<Category> category = categoryRepository.findCategoryByName(product.getCategory().getName());
+
+                if (category.isPresent()) {
+                    Category _category = category.get();
+                    product.setCategory(_category);
+                    newProducts.add(product);
+                }
             }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if (newProducts.isEmpty()) {
+                return new ResponseEntity<>(newProducts, HttpStatus.NOT_FOUND);
+            }
+            productRepository.saveAll(newProducts);
+            return new ResponseEntity<>(newProducts, HttpStatus.OK);
+
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -159,7 +157,7 @@ public class ProductController {
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-        } catch (Exception e ){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

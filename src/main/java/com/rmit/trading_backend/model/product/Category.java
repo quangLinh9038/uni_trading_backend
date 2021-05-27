@@ -11,21 +11,21 @@ import java.util.List;
 public class Category {
 
     @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column
     private String name;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category")
     @JsonIgnore
-    private List<Product> products = new ArrayList<>();
+    private List<Product> productList = new ArrayList<>();
 
     public Category() {
+
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -41,12 +41,11 @@ public class Category {
         this.name = name;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public List<Product> getProductList() {
+        return productList;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
     }
-
 }

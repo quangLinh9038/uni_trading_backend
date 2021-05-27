@@ -30,12 +30,6 @@ public class Customer extends Person {
         this.contact_person = contact_person;
     }
 
-    public List<SaleInvoice> getSaleInvoiceList() {
-        return saleInvoiceList;
-    }
 
-    public void setSaleInvoiceList(List<SaleInvoice> saleInvoiceList) {
-        this.saleInvoiceList = saleInvoiceList;
-    }
 }
 

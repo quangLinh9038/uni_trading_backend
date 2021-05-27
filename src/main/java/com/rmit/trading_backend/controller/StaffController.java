@@ -1,7 +1,7 @@
 package com.rmit.trading_backend.controller;
 
 import com.rmit.trading_backend.model.actor.Staff;
-import com.rmit.trading_backend.repository.StaffRepository;
+import com.rmit.trading_backend.repository.actor.repository.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,12 +35,15 @@ public class StaffController {
 
     // GET STAFFS BY NAME
     @GetMapping("/staffById/{id}")
-    public ResponseEntity<List<Staff>> getStaffById(@PathVariable("id") int id) {
+    public ResponseEntity<Optional<Staff>> getStaffById(@PathVariable("id") int id) {
         try {
-            if (staffRepository.findStaffByIdContaining(id).isEmpty()) {
+            Optional<Staff> staff = staffRepository.findById(id);
+
+            if (staff.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(staffRepository.findStaffByIdContaining(id), HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
+
         } catch (Exception e) {
             System.out.println("error");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -119,6 +122,6 @@ public class StaffController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    } 
+    }
 
 }

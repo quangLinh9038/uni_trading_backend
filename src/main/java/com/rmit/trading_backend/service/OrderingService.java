@@ -4,20 +4,20 @@ package com.rmit.trading_backend.service;
 import com.rmit.trading_backend.model.actor.Provider;
 import com.rmit.trading_backend.model.actor.Staff;
 import com.rmit.trading_backend.model.ordering.Ordering;
+import com.rmit.trading_backend.repository.actor.repository.ProviderRepository;
+import com.rmit.trading_backend.repository.actor.repository.StaffRepository;
 import com.rmit.trading_backend.repository.OrderingRepository;
-import com.rmit.trading_backend.repository.ProviderRepository;
-import com.rmit.trading_backend.repository.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
 public class OrderingService {
-
 
     @Autowired
     OrderingRepository orderingRepository;
@@ -28,36 +28,33 @@ public class OrderingService {
     @Autowired
     ProviderRepository providerRepository;
 
-    //POST method
-    //Adding new orders
-    public boolean addOrders(List<Ordering> orderList) {
-        for (Ordering ordering : orderList) {
+    // Adding a new orders
+    public void addNewOrder(List<Ordering> orderings) {
+
+        List<Ordering> orderingList = new ArrayList<>();
+
+        for (Ordering order : orderings) {
 
             // check valid Provider and Staff
             // with email which is more unique than name
             // and more friendly than "id"
-            Provider provider = providerRepository.findProviderByEmail(ordering.getProvider().getEmail());
+            Optional<Provider> providerData = providerRepository.findProviderByEmail(order.getProvider().getEmail());
 
-            // optional return type
-            Optional<Provider> optProvider = Optional.ofNullable(provider);
+            Optional<Staff> staffData = staffRepository.findStaffByEmail(order.getStaff().getEmail());
 
+            if (providerData.isPresent() && staffData.isPresent()) {
 
-            Staff staff = staffRepository.findStaffByEmail(ordering.getStaff().getEmail());
-            Optional<Staff> optStaff = Optional.ofNullable(staff);
+                Staff _staff = staffData.get();
+                Provider _provider = providerData.get();
 
-            if (optProvider.isPresent() && optStaff.isPresent()) {
+                order.setProvider(_provider);
+                order.setStaff(_staff);
 
-                ordering.setProvider(provider);
-                ordering.setStaff(staff);
-
-                orderingRepository.saveAll(orderList);
-
-                System.out.println("Add order success!");
-                return true;
+                orderingList.add(order);
             }
             System.out.println("Provider or staff not found");
         }
-        return false;
+        orderingRepository.saveAll(orderingList);
+        System.out.println("Success");
     }
-
 }

@@ -1,17 +1,21 @@
 package com.rmit.trading_backend.controller;
 
 
+import com.rmit.trading_backend.model.actor.Provider;
 import com.rmit.trading_backend.model.actor.Staff;
 import com.rmit.trading_backend.model.ordering.Ordering;
+import com.rmit.trading_backend.repository.actor.repository.ProviderRepository;
+import com.rmit.trading_backend.repository.actor.repository.StaffRepository;
 import com.rmit.trading_backend.repository.OrderingRepository;
-import com.rmit.trading_backend.repository.StaffRepository;
 import com.rmit.trading_backend.service.OrderingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,11 +26,11 @@ import java.util.Optional;
 public class OrderingController {
 
     @Autowired
+    ProviderRepository providerRepository;
+    @Autowired
     private OrderingRepository orderingRepository;
-
     @Autowired
     private OrderingService orderingService;
-
     @Autowired
     private StaffRepository staffRepository;
 
@@ -40,12 +44,13 @@ public class OrderingController {
 
             if (staffName == null) {
                 orderingRepository.findAll().forEach(orderings::add);
-            }
-            else {
-                Staff staff = staffRepository.findStaffByNameContains(staffName);
-
+            } else {
                 // find order by staff name
-                orderingRepository.findAllByStaff(staff).forEach(orderings::add);
+                Optional<Staff> staff = staffRepository.findStaffByNameContains(staffName);
+                if(staff.isPresent()){
+                    Staff _staff = staff.get();
+                    orderingRepository.findAllByStaff(_staff).forEach(orderings::add);
+                }
             }
 
             if (orderings.isEmpty()) {
@@ -59,20 +64,65 @@ public class OrderingController {
         }
     }
 
+    @GetMapping("/orderByProvider")
+    public ResponseEntity<List<Ordering>> getOrdersByProvider(@RequestParam(required = false) String name) {
+        try {
 
-    //TODO
-    // GET ALL ORDERS BY A PROVIDER
+            List<Ordering> orderings = new ArrayList<>();
 
+            if (name == null) {
+                orderingRepository.findAll().forEach(orderings::add);
+            } else {
+                Optional<Provider> providerData = providerRepository.findProviderByName(name);
+
+                if (providerData.isPresent()) {
+                    Provider _provider = providerData.get();
+                    // find order by staff name
+                    orderingRepository.findAllByProvider(_provider).forEach(orderings::add);
+                }
+            }
+
+            if (orderings.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(orderings, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/ordersByDate")
+    public ResponseEntity<List<Ordering>> getOrdersByDate(
+                            @RequestParam("orderedDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date orderedDate){
+        try{
+//            List<Ordering> results = orderingRepository.findAllByOrderedDate(orderedDate);
+//
+//            if(results.isEmpty()){
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+            return new ResponseEntity<>(orderingRepository.findAllByOrderedDate(orderedDate), HttpStatus.OK);
+
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+    }
 
     //POST NEW ORDER
     @PostMapping("/orders")
     public ResponseEntity<List<Ordering>> addOrders(@RequestBody List<Ordering> orderings) {
         try {
-            if (orderingService.addOrders(orderings)) {
-                return new ResponseEntity<>(orderings, HttpStatus.CREATED);
+            orderingService.addNewOrder(orderings);
+
+            if (orderings.isEmpty()) {
+                return new ResponseEntity<>(orderings, HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(orderings, HttpStatus.OK);
+
         } catch (Exception e) {
+            System.out.println(e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -81,11 +131,10 @@ public class OrderingController {
     @DeleteMapping("/orders")
     public ResponseEntity<String> deleteAllOrders() {
         try {
-
             List<Ordering> deleteOrders = orderingRepository.findAll();
 
             if (deleteOrders.isEmpty()) {
-                return new ResponseEntity<>("Empty product list", HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>("Empty list", HttpStatus.NO_CONTENT);
             }
             orderingRepository.deleteAll();
             return new ResponseEntity<>("Delete all successfully", HttpStatus.OK);
@@ -112,6 +161,7 @@ public class OrderingController {
         }
     }
 
+
     //UPDATE AN ORDER
     @PutMapping("/orders/{id}")
     public ResponseEntity<Ordering> updateOrderById(@PathVariable("id") long id, @RequestBody Ordering ordering) {
@@ -125,7 +175,6 @@ public class OrderingController {
             _ordering.setOrderedDate(ordering.getOrderedDate());
             _ordering.setStaff(ordering.getStaff());
             _ordering.setProvider(ordering.getProvider());
-            _ordering.setOrderDetailList(ordering.getOrderDetailList());
 
             orderingRepository.save(_ordering);
 
