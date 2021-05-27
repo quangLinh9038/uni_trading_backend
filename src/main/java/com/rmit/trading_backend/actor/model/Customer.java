@@ -16,7 +16,7 @@ public class Customer extends Person {
 
     // one customer can receive many sale invoices
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-    private final List<SaleInvoice> saleInvoiceList = new ArrayList<>();
+    private List<SaleInvoice> saleInvoiceList = new ArrayList<>();
 
 
     public Customer() {
@@ -30,8 +30,13 @@ public class Customer extends Person {
         this.contact_person = contact_person;
     }
 
+    @JsonIgnore
     public List<SaleInvoice> getSaleInvoiceList() {
         return saleInvoiceList;
+    }
+
+    public void setSaleInvoiceList(List<SaleInvoice> saleInvoiceList) {
+        this.saleInvoiceList = saleInvoiceList;
     }
 }
 
