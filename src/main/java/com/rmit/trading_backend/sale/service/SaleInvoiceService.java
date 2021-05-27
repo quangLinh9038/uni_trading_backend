@@ -4,8 +4,11 @@ import com.rmit.trading_backend.actor.model.Customer;
 import com.rmit.trading_backend.actor.model.Staff;
 import com.rmit.trading_backend.actor.repository.CustomerRepository;
 import com.rmit.trading_backend.actor.repository.StaffRepository;
+import com.rmit.trading_backend.sale.model.SaleDetail;
 import com.rmit.trading_backend.sale.model.SaleInvoice;
+import com.rmit.trading_backend.sale.repository.SaleDetailRepository;
 import com.rmit.trading_backend.sale.repository.SaleInvoiceRepository;
+import com.sun.xml.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,9 @@ public class SaleInvoiceService {
     @Autowired
     private StaffRepository staffRepository;
 
+    @Autowired
+    private SaleDetailRepository saleDetailRepository;
+
     // POST NEW SALE INVOICE
     public void addSaleInvoice(List<SaleInvoice> saleInvoices) {
 
@@ -44,6 +50,7 @@ public class SaleInvoiceService {
 
                 saleInvoice.setStaff(_staff);
                 saleInvoice.setCustomer(_customer);
+                //TODO add total price
 
                 saleInvoiceList.add(saleInvoice);
             }

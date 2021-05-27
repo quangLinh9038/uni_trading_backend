@@ -1,6 +1,7 @@
 package com.rmit.trading_backend.sale.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rmit.trading_backend.inventory.delivery.model.DeliveryDetail;
 import com.rmit.trading_backend.product.model.Product;
 
@@ -21,12 +22,15 @@ public class SaleDetail {
     @Column
     private int quantity;
 
+    @Column
+    private long totalValue;
+
     @OneToOne
     @JsonIgnore
     private DeliveryDetail deliveryDetail;
 
-    // TODO: update as OrderDetail
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = "saleDetailList", allowSetters = true)
     private SaleInvoice saleInvoice;
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -84,4 +88,11 @@ public class SaleDetail {
         this.product = product;
     }
 
+    public long getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(long totalValue) {
+        this.totalValue = totalValue;
+    }
 }

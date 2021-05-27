@@ -1,5 +1,6 @@
 package com.rmit.trading_backend.inventory.delivery.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rmit.trading_backend.product.model.Product;
 import com.rmit.trading_backend.sale.model.SaleDetail;
 
@@ -22,7 +23,8 @@ public class DeliveryDetail {
 
 
     //TODO: update as ReceivedDetail
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = "deliveryDetail", allowSetters = true)
     private DeliveryNote deliveryNote;
 
     @OneToOne(fetch = FetchType.EAGER)

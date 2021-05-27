@@ -1,5 +1,6 @@
 package com.rmit.trading_backend.sale.controller;
 
+import com.rmit.trading_backend.product.model.Product;
 import com.rmit.trading_backend.sale.model.SaleDetail;
 import com.rmit.trading_backend.sale.repository.SaleDetailRepository;
 import com.rmit.trading_backend.sale.service.SaleDetailService;
@@ -94,14 +95,16 @@ public class SaleDetailController {
     @PutMapping("/saleDetails/{id}")
     public ResponseEntity<SaleDetail> updateSaleDetailById(@PathVariable("id") long id, @RequestBody SaleDetail saleDetail) {
         Optional<SaleDetail> updatedSaleDetail = saleDetailRepository.findById(id);
+
         try {
             if (updatedSaleDetail.isPresent()) {
 
                 SaleDetail _saleDetail = updatedSaleDetail.get();
 
                 _saleDetail.setProduct(saleDetail.getProduct());
-                _saleDetail.setQuantity(saleDetail.getQuantity());
                 _saleDetail.setPrice(saleDetail.getPrice());
+                _saleDetail.setQuantity(saleDetail.getQuantity());
+                _saleDetail.setTotalValue(saleDetail.getPrice() * saleDetail.getQuantity());
 
                 saleDetailRepository.save(saleDetail);
                 return new ResponseEntity<>(saleDetail, HttpStatus.OK);

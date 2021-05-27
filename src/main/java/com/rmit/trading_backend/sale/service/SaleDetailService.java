@@ -39,6 +39,7 @@ public class SaleDetailService {
             saleDetail.setSaleInvoice(_saleInvoice);
             saleDetail.setProduct(_product);
             saleDetail.setPrice(_product.getPrice());
+            saleDetail.setTotalValue(_product.getPrice() * saleDetail.getQuantity());
 
             saleDetailRepository.save(saleDetail);
             System.out.println("Add detail successfully");
