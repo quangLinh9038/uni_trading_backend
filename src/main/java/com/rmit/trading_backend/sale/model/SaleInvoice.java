@@ -22,9 +22,9 @@ public class SaleInvoice {
     private long id;
 
     @Column
-    @Temporal(TemporalType.DATE)
+//    @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    private Date soldDate;
 
     @Column(name = "total_price")
     private long totalPrice;
@@ -54,12 +54,12 @@ public class SaleInvoice {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getSoldDate() {
+        return soldDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setSoldDate(Date soldDate) {
+        this.soldDate = soldDate;
     }
 
     public Customer getCustomer() {

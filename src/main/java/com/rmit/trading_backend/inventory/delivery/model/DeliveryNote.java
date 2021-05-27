@@ -23,7 +23,7 @@ public class DeliveryNote {
     private long id;
 
     @Column
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date deliveryDate;
 
     @OneToOne
@@ -34,7 +34,7 @@ public class DeliveryNote {
     private Staff staff;
 
     @OneToMany(mappedBy = "deliveryNote", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = "receivedNote", allowSetters = true)
+    @JsonIgnoreProperties(value = "deliveryNote", allowSetters = true)
     private List<DeliveryDetail> deliveryDetailList = new ArrayList<>();
 
     public long getId() {

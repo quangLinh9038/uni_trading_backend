@@ -21,11 +21,11 @@ public interface SaleInvoiceRepository extends JpaRepository<SaleInvoice, Long> 
 
     List<SaleInvoice> findAllByCustomerName(String staffName);
 
-    List<SaleInvoice> findAllByDate(Date date);
+    List<SaleInvoice> findAllBySoldDate(Date date);
 
-    List<SaleInvoice> findAllByDateBetween(Date startDate, Date endDate);
+    List<SaleInvoice> findAllBySoldDateBetween(Date startDate, Date endDate);
 
-    List<SaleInvoice> findAllByStaffNameAndDateBetween(String staffName, Date startDate, Date endDate);
+    List<SaleInvoice> findAllByStaffNameAndSoldDateBetween(String staffName, Date startDate, Date endDate);
 
-    List<SaleInvoice> findAllByCustomerNameAndDateBetween(String customerName, Date date, Date date2);
+    List<SaleInvoice> findAllByCustomerNameAndSoldDateBetween(String customerName, Date date, Date date2);
 }

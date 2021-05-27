@@ -25,6 +25,10 @@ public class SaleDetail {
     @Column
     private long totalValue;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id")
+    private Product product;
+
     @OneToOne
     @JsonIgnore
     private DeliveryDetail deliveryDetail;
@@ -32,10 +36,6 @@ public class SaleDetail {
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = "saleDetailList", allowSetters = true)
     private SaleInvoice saleInvoice;
-
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id")
-    private Product product;
 
     public SaleDetail() {
     }

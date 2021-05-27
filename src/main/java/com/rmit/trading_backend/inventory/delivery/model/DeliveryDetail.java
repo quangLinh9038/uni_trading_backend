@@ -21,8 +21,6 @@ public class DeliveryDetail {
     @JoinColumn(name = "sale_detail_id")
     private SaleDetail saleDetail;
 
-
-    //TODO: update as ReceivedDetail
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = "deliveryDetail", allowSetters = true)
     private DeliveryNote deliveryNote;

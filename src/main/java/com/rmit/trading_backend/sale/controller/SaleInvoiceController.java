@@ -81,10 +81,10 @@ public class SaleInvoiceController {
     // GET ALL SALE INVOICE BY DATE
     @GetMapping("/saleInvoiceByDate")
     public ResponseEntity<List<SaleInvoice>> getSaleInvoiceByDate(
-            @RequestParam("receivedDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+            @RequestParam("saleInvoiceDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
         try {
 
-            return new ResponseEntity<>(saleInvoiceRepository.findAllByDate(date), HttpStatus.OK);
+            return new ResponseEntity<>(saleInvoiceRepository.findAllBySoldDate(date), HttpStatus.OK);
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -99,7 +99,7 @@ public class SaleInvoiceController {
             @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate
     ){
         try{
-            return new ResponseEntity<>(saleInvoiceRepository.findAllByDateBetween(startDate, endDate), HttpStatus.OK);
+            return new ResponseEntity<>(saleInvoiceRepository.findAllBySoldDateBetween(startDate, endDate), HttpStatus.OK);
         } catch (Exception e){
             System.out.println(e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -113,7 +113,7 @@ public class SaleInvoiceController {
             @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
             @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
         try{
-            return new ResponseEntity<>(saleInvoiceRepository.findAllByCustomerNameAndDateBetween(customerName, startDate, endDate), HttpStatus.OK);
+            return new ResponseEntity<>(saleInvoiceRepository.findAllByCustomerNameAndSoldDateBetween(customerName, startDate, endDate), HttpStatus.OK);
         } catch (Exception e){
             System.out.println(e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -127,7 +127,7 @@ public class SaleInvoiceController {
             @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
             @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
         try{
-            return new ResponseEntity<>(saleInvoiceRepository.findAllByStaffNameAndDateBetween(staffName, startDate, endDate), HttpStatus.OK);
+            return new ResponseEntity<>(saleInvoiceRepository.findAllByStaffNameAndSoldDateBetween(staffName, startDate, endDate), HttpStatus.OK);
         } catch (Exception e){
             System.out.println(e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -173,7 +173,7 @@ public class SaleInvoiceController {
                 SaleInvoice _saleInvoice = updatedSaleInvoice.get();
 
 
-                _saleInvoice.setDate(saleInvoice.getDate());
+                _saleInvoice.setSoldDate(saleInvoice.getSoldDate());
                 _saleInvoice.setStaff(saleInvoice.getStaff());
                 _saleInvoice.setCustomer(saleInvoice.getCustomer());
 //                _saleInvoice.setTotalPrice(saleInvoice.getCustomer());
