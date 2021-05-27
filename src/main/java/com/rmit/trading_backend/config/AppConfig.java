@@ -18,7 +18,7 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan(basePackages = "com.rmit.trading_backend")
-@EnableJpaRepositories(basePackages = "com.rmit.trading_backend.repository")
+@EnableJpaRepositories(basePackages = "com.rmit.trading_backend")
 @EnableTransactionManagement
 @EnableWebMvc
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
@@ -39,7 +39,7 @@ public class AppConfig {
 
         // mapping all entities to the DB
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
-        sessionFactoryBean.setPackagesToScan("com.rmit.trading_backend.model");
+        sessionFactoryBean.setPackagesToScan("com.rmit.trading_backend");
 
         // config data source
         // including database info
