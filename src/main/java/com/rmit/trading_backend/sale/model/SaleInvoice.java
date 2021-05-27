@@ -21,7 +21,7 @@ public class SaleInvoice {
     private long id;
 
     @Column
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date date;
 
     @Column(name = "total_price")
@@ -33,19 +33,24 @@ public class SaleInvoice {
     @ManyToOne
     private Staff staff;
 
+    //TODO mapping as Order
     @OneToMany(mappedBy = "saleInvoice", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<SaleDetail> saleDetailList = new ArrayList<>();
 
     @OneToOne
     @JsonIgnore
-    private DeliveryNote deliveryNode;
+    private DeliveryNote deliveryNote;
 
     public SaleInvoice() {
     }
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Date getDate() {
@@ -89,10 +94,12 @@ public class SaleInvoice {
     }
 
     public DeliveryNote getDeliveryNode() {
-        return deliveryNode;
+        return deliveryNote;
     }
 
     public void setDeliveryNode(DeliveryNote deliveryNode) {
-        this.deliveryNode = deliveryNode;
+        this.deliveryNote = deliveryNode;
     }
+
+
 }

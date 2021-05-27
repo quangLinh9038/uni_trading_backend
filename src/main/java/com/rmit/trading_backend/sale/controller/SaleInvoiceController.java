@@ -61,6 +61,15 @@ public class SaleInvoiceController {
         }
     }
 
+    // TODO: filtering SALE INVOICE  by A date
+
+    // TODO: list all SALE INVOICE  by period (startDate - endDate)
+
+    // TODO: All sales invoice by a CUSTOMER in a period: start date and end date.
+
+    // TODO: All sales invoice by a STAFF in a period: start date and end date.
+
+
     // POST ONE SALES INVOICE
     @PostMapping("/saleInvoice")
     public ResponseEntity<List<SaleInvoice>> addOneSaleInvoice(@RequestBody List<SaleInvoice> saleInvoices) {

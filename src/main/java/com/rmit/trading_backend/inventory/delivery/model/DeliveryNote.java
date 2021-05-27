@@ -32,6 +32,7 @@ public class DeliveryNote {
     @ManyToOne
     private Staff staff;
 
+    //TODO: update as ReceivedNote
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "deliveryNote", cascade = CascadeType.ALL)
     @JsonIgnore

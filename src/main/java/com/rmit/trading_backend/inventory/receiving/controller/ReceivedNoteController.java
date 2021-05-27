@@ -42,7 +42,7 @@ public class ReceivedNoteController {
         }
     }
 
-    // GET ALL RECEIVED NOTES
+    // GET ALL RECEIVED NOTES BY DATE
     @GetMapping("/receivedNotesByDate")
     public ResponseEntity<List<ReceivedNote>> getReceivedNotesByDate(
             @RequestParam("receivedDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date receivedDate) {
@@ -56,7 +56,7 @@ public class ReceivedNoteController {
         }
     }
 
-    //TODO: List all received note by a period:
+    //GET ALL RECEIVED NOTES BY A PERIOD
     @GetMapping("/receivedNoteInPeriod")
     public ResponseEntity<List<ReceivedNote>> getReceivedNotesInAPeriod(
             @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,

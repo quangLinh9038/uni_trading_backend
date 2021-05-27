@@ -49,6 +49,10 @@ public class DeliveryNoteController {
         }
     }
 
+    // TODO: filtering delivery note by date
+
+    // TODO: list all delivery note by period
+
     // POST DETAILS TO A SALE INVOICE
     @PostMapping("/deliveryNote")
     public ResponseEntity<DeliveryNote> addDeliveryNote(@RequestBody DeliveryNote deliveryNote) {

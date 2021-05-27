@@ -28,7 +28,8 @@ public class ReceivedDetail {
     private OrderDetail orderDetail;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = "receivedDetails", allowSetters = true)
+//    @JsonIgnoreProperties(value = "receivedDetails", allowSetters = true)
+    @JsonIgnore
     private ReceivedNote receivedNote;
 
     public long getId() {

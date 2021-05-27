@@ -25,6 +25,7 @@ public class SaleDetail {
     @JsonIgnore
     private DeliveryDetail deliveryDetail;
 
+    // TODO: update as OrderDetail
     @ManyToOne
     private SaleInvoice saleInvoice;
 

@@ -20,6 +20,8 @@ public class DeliveryDetail {
     @JoinColumn(name = "sale_detail_id")
     private SaleDetail saleDetail;
 
+
+    //TODO: update as ReceivedDetail
     @ManyToOne
     private DeliveryNote deliveryNote;
 
