@@ -50,6 +50,7 @@ public class SaleInvoiceService {
 
                 saleInvoice.setStaff(_staff);
                 saleInvoice.setCustomer(_customer);
+                saleInvoice.setTotalPrice(0);
                 //TODO add total price
 
                 saleInvoiceList.add(saleInvoice);

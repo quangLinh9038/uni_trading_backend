@@ -8,6 +8,7 @@ import com.rmit.trading_backend.inventory.delivery.model.DeliveryNote;
 import com.rmit.trading_backend.inventory.receiving.model.ReceivedNote;
 import com.rmit.trading_backend.ordering.model.Ordering;
 import com.rmit.trading_backend.sale.model.SaleInvoice;
+import com.rmit.trading_backend.sale.repository.SaleDetailRepository;
 import com.rmit.trading_backend.sale.repository.SaleInvoiceRepository;
 import com.rmit.trading_backend.sale.service.SaleInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class SaleInvoiceController {
     private SaleInvoiceService saleInvoiceService;
 
     @Autowired
+    private SaleDetailRepository saleDetailRepository;
+
+    @Autowired
     private StaffRepository staffRepository;
 
     @Autowired
@@ -47,6 +51,20 @@ public class SaleInvoiceController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(saleInvoiceRepository.findAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // GET ALL SALES INVOICE BY ID
+    @GetMapping("/saleInvoice/{id}")
+    public ResponseEntity<Optional<SaleInvoice>> getAllSaleInvoiceById(@PathVariable(value = "id") long id) {
+        try {
+            // check empty list
+            if (saleInvoiceRepository.findById(id).isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(saleInvoiceRepository.findById(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -134,6 +152,61 @@ public class SaleInvoiceController {
         }
     }
 
+    // GET REVENUE
+    @GetMapping("/revenue")
+    public ResponseEntity<Long> calculateFinalRevenue() {
+        try{
+            return new ResponseEntity<>(saleInvoiceRepository.calculateRevenue(), HttpStatus.OK);
+        } catch (Exception e){
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // GET REVENUE IN A PERIOD
+    @GetMapping("/revenueInPeriod")
+    public ResponseEntity<Long> calculateRevenueInPeriod(
+            @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate
+    ) {
+        try{
+            return new ResponseEntity<>(saleInvoiceRepository.calculateRevenueBetween(startDate, endDate), HttpStatus.OK);
+        } catch (Exception e){
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // GET REVENUE BY A CUSTOMER IN A PERIOD
+    @GetMapping("/revenueByCustomerInPeriod")
+    public ResponseEntity<Long> calculateRevenueByCustomerInPeriod(
+            @RequestParam(required = false) String customerName,
+            @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate
+    ) {
+        try{
+            return new ResponseEntity<>(saleInvoiceRepository.calculateRevenueByCustomerBetween(customerName, startDate, endDate), HttpStatus.OK);
+        } catch (Exception e){
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // GET REVENUE BY A STAFF IN A PERIOD
+    @GetMapping("/revenueBySaleStaffInPeriod")
+    public ResponseEntity<Long> calculateRevenueBySaleStaffInPeriod(
+            @RequestParam(required = false) String staffName,
+            @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate
+    ) {
+        try{
+            return new ResponseEntity<>(saleInvoiceRepository.calculateRevenueByStaffBetween(staffName, startDate, endDate), HttpStatus.OK);
+        } catch (Exception e){
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // POST ONE SALES INVOICE
     @PostMapping("/saleInvoice")
     public ResponseEntity<List<SaleInvoice>> addOneSaleInvoice(@RequestBody List<SaleInvoice> saleInvoices) {
@@ -167,17 +240,19 @@ public class SaleInvoiceController {
     @PutMapping("/saleInvoice/{id}")
     public ResponseEntity<SaleInvoice> updateSaleInvoiceById(@PathVariable("id") long id, @RequestBody SaleInvoice saleInvoice) {
         Optional<SaleInvoice> updatedSaleInvoice = saleInvoiceRepository.findById(id);
+        Long sum = saleDetailRepository.calculateTotalPriceOfASaleInvoice(id);
+        System.out.println(saleInvoice.getId());
+        System.out.println(sum);
+
         try {
             if (updatedSaleInvoice.isPresent()) {
 
                 SaleInvoice _saleInvoice = updatedSaleInvoice.get();
 
-
                 _saleInvoice.setSoldDate(saleInvoice.getSoldDate());
                 _saleInvoice.setStaff(saleInvoice.getStaff());
                 _saleInvoice.setCustomer(saleInvoice.getCustomer());
-//                _saleInvoice.setTotalPrice(saleInvoice.getCustomer());
-
+                _saleInvoice.setTotalPrice(sum);
 
                 saleInvoiceRepository.save(saleInvoice);
                 return new ResponseEntity<>(saleInvoice, HttpStatus.OK);
@@ -188,4 +263,30 @@ public class SaleInvoiceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // UPDATE TOTAL PRICE OF ONE SALE INVOICE
+    @PutMapping("/totalPriceSaleInvoice/{id}")
+    public ResponseEntity<SaleInvoice> updateTotalPriceOfSaleInvoiceById(@PathVariable("id") long id) {
+        Optional<SaleInvoice> updatedSaleInvoice = saleInvoiceRepository.findById(id);
+        Long sum = saleDetailRepository.calculateTotalPriceOfASaleInvoice(id);
+        System.out.println(id);
+        System.out.println(sum);
+
+        try {
+            if (updatedSaleInvoice.isPresent()) {
+
+                SaleInvoice _saleInvoice = updatedSaleInvoice.get();
+
+                _saleInvoice.setTotalPrice(sum);
+
+                saleInvoiceRepository.save(_saleInvoice);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
