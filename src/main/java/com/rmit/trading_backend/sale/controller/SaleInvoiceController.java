@@ -266,7 +266,7 @@ public class SaleInvoiceController {
 
     // UPDATE TOTAL PRICE OF ONE SALE INVOICE
     @PutMapping("/totalPriceSaleInvoice/{id}")
-    public ResponseEntity<SaleInvoice> updateTotalPriceOfSaleInvoiceById(@PathVariable("id") long id) {
+    public ResponseEntity<Optional<SaleInvoice>> updateTotalPriceOfSaleInvoiceById(@PathVariable("id") long id) {
         Optional<SaleInvoice> updatedSaleInvoice = saleInvoiceRepository.findById(id);
         Long sum = saleDetailRepository.calculateTotalPriceOfASaleInvoice(id);
         System.out.println(id);
@@ -280,7 +280,7 @@ public class SaleInvoiceController {
                 _saleInvoice.setTotalPrice(sum);
 
                 saleInvoiceRepository.save(_saleInvoice);
-                return new ResponseEntity<>(HttpStatus.OK);
+                return new ResponseEntity<>(saleInvoiceRepository.findById(id), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

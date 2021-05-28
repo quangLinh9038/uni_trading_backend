@@ -116,25 +116,4 @@ public class SaleDetailController {
         }
     }
 
-
-
-
-    // TEST
-    @GetMapping("/test1")
-    public ResponseEntity<Long> test1(
-            @RequestParam(required = false) long saleInvoiceId
-    ) {
-        try{
-            if (saleDetailRepository.calculateTotalPriceOfASaleInvoice(saleInvoiceId) != null) {
-                System.out.println(saleDetailRepository.calculateTotalPriceOfASaleInvoice(saleInvoiceId));
-                return new ResponseEntity<>(saleDetailRepository.calculateTotalPriceOfASaleInvoice(saleInvoiceId), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e){
-            System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 }

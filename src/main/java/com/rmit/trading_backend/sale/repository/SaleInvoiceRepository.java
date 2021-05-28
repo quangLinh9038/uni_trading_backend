@@ -35,19 +35,20 @@ public interface SaleInvoiceRepository extends JpaRepository<SaleInvoice, Long> 
 
     List<SaleInvoice> findAllByCustomerNameAndSoldDateBetween(String customerName, Date date, Date date2);
 
+    // REVENUE OF ALL TIME
     @Query("SELECT SUM(si.totalPrice) FROM SaleInvoice si")
     Long calculateRevenue();
 
+    // REVENUE
     @Query("SELECT SUM(si.totalPrice) FROM SaleInvoice si WHERE si.soldDate BETWEEN :startDate AND :endDate")
     Long calculateRevenueBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
+    // REVENUE BY CUSTOMER
     @Query("SELECT SUM(si.totalPrice) FROM SaleInvoice si WHERE si.customer.name = :customerName AND si.soldDate BETWEEN :startDate AND :endDate")
     Long calculateRevenueByCustomerBetween(@Param("customerName") String customerName, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
+    // REVENUE BY SALE STAFF
     @Query("SELECT SUM(si.totalPrice) FROM SaleInvoice si WHERE si.staff.name = :staffName AND si.soldDate BETWEEN :startDate AND :endDate")
     Long calculateRevenueByStaffBetween(@Param("staffName") String staffName, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
-    @Modifying
-    @Query("UPDATE SaleInvoice si SET si.totalPrice = :totalPrice WHERE si.id = :saleInvoiceId")
-    Optional<SaleInvoice> updateTotalPriceSaleInvoice(@Param("totalPrice") long totalPrice, @Param("saleInvoiceId") long saleInvoiceId);
 }
