@@ -5,6 +5,8 @@ import com.rmit.trading_backend.inventory.delivery.repository.DeliveryNoteReposi
 import com.rmit.trading_backend.sale.model.SaleInvoice;
 import com.rmit.trading_backend.sale.repository.SaleInvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,22 +23,25 @@ public class DeliveryNoteService {
     private SaleInvoiceRepository saleInvoiceRepository;
 
     // ADD DELIVERY NOTE
-    public void addDeliveryNote(DeliveryNote deliveryNote) {
+    public ResponseEntity<String> addDeliveryNote(DeliveryNote deliveryNote) {
 
-        Optional<SaleInvoice> saleInvoice = saleInvoiceRepository.findById(deliveryNote.getSaleInvoice().getId());
+        SaleInvoice si = deliveryNote.getSaleInvoice();
 
-        if (saleInvoice.isPresent()) {
+        if(si != null){
+            Optional<SaleInvoice> saleInvoice = saleInvoiceRepository.findById(si.getId());
 
-            SaleInvoice _saleInvoice = saleInvoice.get();
+            if (saleInvoice.isPresent()) {
 
-            deliveryNote.setSaleInvoice(_saleInvoice);
+                SaleInvoice _saleInvoice = saleInvoice.get();
 
-            deliveryNoteRepository.save(deliveryNote);
-            System.out.println("Add delivery note successfully");
-        } else {
+                deliveryNote.setSaleInvoice(_saleInvoice);
+
+                deliveryNoteRepository.save(deliveryNote);
+                System.out.println("Add delivery note successfully");
+            }
             System.out.println("Sale invoice not found");
+
         }
+        return new ResponseEntity<String>("Please input Sale Invoice", HttpStatus.NOT_FOUND);
     }
-
-
 }

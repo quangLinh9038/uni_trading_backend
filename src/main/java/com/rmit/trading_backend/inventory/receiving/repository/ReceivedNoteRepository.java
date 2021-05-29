@@ -14,7 +14,5 @@ public interface ReceivedNoteRepository extends JpaRepository<ReceivedNote, Long
 
     List<ReceivedNote> findAllByReceivedDate(Date receivedDate);
 
-    List<ReceivedNote> findAllByStaffAndReceivedDateBetween(Staff staff, Date startDate, Date endDate);
-
 
 }

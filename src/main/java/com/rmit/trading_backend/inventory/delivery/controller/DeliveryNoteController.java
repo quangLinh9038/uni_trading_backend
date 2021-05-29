@@ -3,8 +3,6 @@ package com.rmit.trading_backend.inventory.delivery.controller;
 import com.rmit.trading_backend.inventory.delivery.model.DeliveryNote;
 import com.rmit.trading_backend.inventory.delivery.repository.DeliveryNoteRepository;
 import com.rmit.trading_backend.inventory.delivery.service.DeliveryNoteService;
-import com.rmit.trading_backend.inventory.receiving.model.ReceivedNote;
-import com.rmit.trading_backend.sale.model.SaleInvoice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -78,15 +76,21 @@ public class DeliveryNoteController {
     }
 
 
-    // POST DETAILS TO A SALE INVOICE
+    //
     @PostMapping("/deliveryNote")
     public ResponseEntity<DeliveryNote> addDeliveryNote(@RequestBody DeliveryNote deliveryNote) {
 
         try {
-            deliveryNoteService.addDeliveryNote(deliveryNote);
+            ResponseEntity<String> responseEntity = deliveryNoteService.addDeliveryNote(deliveryNote);
+            if(responseEntity.equals(new ResponseEntity(HttpStatus.NOT_FOUND))){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+            }
+//            deliveryNoteService.addDeliveryNote(deliveryNote);
             return new ResponseEntity<>(deliveryNote, HttpStatus.CREATED);
 
         } catch (Exception e) {
+            System.out.println(e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

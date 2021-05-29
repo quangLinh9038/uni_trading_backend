@@ -17,12 +17,6 @@ import java.util.Optional;
 
 public interface SaleInvoiceRepository extends JpaRepository<SaleInvoice, Long> {
 
-    SaleInvoice findSaleInvoiceById(long id);
-
-    List<SaleInvoice> findAllByStaff(Staff staff);
-
-    List<SaleInvoice> findAllByCustomer(Customer customer);
-
     List<SaleInvoice> findAllByStaffName(String staffName);
 
     List<SaleInvoice> findAllByCustomerName(String staffName);
@@ -39,7 +33,7 @@ public interface SaleInvoiceRepository extends JpaRepository<SaleInvoice, Long> 
     @Query("SELECT SUM(si.totalPrice) FROM SaleInvoice si")
     Long calculateRevenue();
 
-    // REVENUE
+    // ALL REVENUE IN A PERIOD
     @Query("SELECT SUM(si.totalPrice) FROM SaleInvoice si WHERE si.soldDate BETWEEN :startDate AND :endDate")
     Long calculateRevenueBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 

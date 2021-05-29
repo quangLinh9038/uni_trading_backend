@@ -33,7 +33,7 @@ public class SaleInvoiceService {
     @Autowired
     private SaleDetailRepository saleDetailRepository;
 
-    // POST NEW SALE INVOICE
+    // CREATE NEW SALE INVOICE BY LIST
     public void addSaleInvoice(List<SaleInvoice> saleInvoices) {
 
         List<SaleInvoice> saleInvoiceList = new ArrayList<>();
@@ -57,6 +57,6 @@ public class SaleInvoiceService {
             System.out.println("Staff or Customer not found");
         }
         saleInvoiceRepository.saveAll(saleInvoiceList);
-        System.out.println("Add sale invoice successfully");
+
     }
 }
