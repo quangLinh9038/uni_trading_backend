@@ -21,7 +21,7 @@ public class DeliveryDetail {
     @JoinColumn(name = "sale_detail_id")
     private SaleDetail saleDetail;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties(value = "deliveryDetail", allowSetters = true)
     private DeliveryNote deliveryNote;
 
