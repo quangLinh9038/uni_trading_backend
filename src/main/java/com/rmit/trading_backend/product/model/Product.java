@@ -1,7 +1,6 @@
 package com.rmit.trading_backend.product.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rmit.trading_backend.inventory.Inventory;
 import com.rmit.trading_backend.inventory.delivery.model.DeliveryDetail;
 import com.rmit.trading_backend.inventory.receiving.model.ReceivedDetail;
 import com.rmit.trading_backend.ordering.model.OrderDetail;
@@ -55,10 +54,7 @@ public class Product implements Serializable {
     @OneToOne
     @JsonIgnore
     private DeliveryDetail deliveryDetail;
-//
-//    @ManyToOne
-//    @JsonIgnore
-//    private Inventory inventory;
+
 
     public Product() {
     }

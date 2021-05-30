@@ -22,7 +22,6 @@ public class SaleInvoice {
     private long id;
 
     @Column
-//    @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date soldDate;
 

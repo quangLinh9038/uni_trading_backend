@@ -1,7 +1,6 @@
 package com.rmit.trading_backend.inventory.delivery.repository;
 
 import com.rmit.trading_backend.inventory.delivery.model.DeliveryNote;
-import com.rmit.trading_backend.inventory.receiving.model.ReceivedNote;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;

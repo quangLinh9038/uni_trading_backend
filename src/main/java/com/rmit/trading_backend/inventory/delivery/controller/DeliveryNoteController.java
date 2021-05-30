@@ -67,10 +67,10 @@ public class DeliveryNoteController {
     @GetMapping("/deliveryNoteInPeriod")
     public ResponseEntity<List<DeliveryNote>> getDeliveryNoteInAPeriod(
             @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-            @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-        try{
+            @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+        try {
             return new ResponseEntity<>(deliveryNoteRepository.findAllByDeliveryDateBetween(startDate, endDate), HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -82,7 +82,7 @@ public class DeliveryNoteController {
 
         try {
             ResponseEntity<String> responseEntity = deliveryNoteService.addDeliveryNote(deliveryNote);
-            if(responseEntity.equals(new ResponseEntity(HttpStatus.NOT_FOUND))){
+            if (responseEntity.equals(new ResponseEntity(HttpStatus.NOT_FOUND))) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
             }

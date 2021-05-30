@@ -1,14 +1,9 @@
 package com.rmit.trading_backend.inventory;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.rmit.trading_backend.inventory.receiving.model.ReceivedNote;
-import com.rmit.trading_backend.product.model.Product;
-
 import javax.persistence.*;
-import java.util.Date;
 
-//@Entity
-//@Table(name = "inventory")
+@Entity
+@Table(name = "inventory")
 public class Inventory {
 
     @Id
@@ -16,27 +11,21 @@ public class Inventory {
     private int id;
 
     @Column
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date date;
-
-    @Column(name = "Product Name")
     private String product;
 
-    @Column(name = "Received")
-    private long receivedQuantity;
+    @Column
+    private int received;
 
-    @Column(name = "Delivered")
-    private long deliveredQuantity;
+    @Column
+    private int delivery;
 
-
-    @Column(name = "Balance")
-    private long balance;
-
-//    @OneToMany
-//    private Product product;
+    @Column
+    private int balance;
 
 
-    public Inventory(){}
+    public Inventory() {
+
+    }
 
     public int getId() {
         return id;
@@ -54,35 +43,27 @@ public class Inventory {
         this.product = product;
     }
 
-    public long getReceivedQuantity() {
-        return receivedQuantity;
+    public int getReceived() {
+        return received;
     }
 
-    public void setReceivedQuantity(long receivedQuantity) {
-        this.receivedQuantity = receivedQuantity;
+    public void setReceived(int received) {
+        this.received = received;
     }
 
-    public long getDeliveredQuantity() {
-        return deliveredQuantity;
+    public int getDelivery() {
+        return delivery;
     }
 
-    public void setDeliveredQuantity(long deliveredQuantity) {
-        this.deliveredQuantity = deliveredQuantity;
+    public void setDelivery(int delivery) {
+        this.delivery = delivery;
     }
 
-    public long getBalance() {
+    public int getBalance() {
         return balance;
     }
 
-    public void setBalance(long balance) {
+    public void setBalance(int balance) {
         this.balance = balance;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 }

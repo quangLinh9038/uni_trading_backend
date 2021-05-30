@@ -1,6 +1,5 @@
 package com.rmit.trading_backend.sale.controller;
 
-import com.rmit.trading_backend.product.model.Product;
 import com.rmit.trading_backend.sale.model.SaleDetail;
 import com.rmit.trading_backend.sale.repository.SaleDetailRepository;
 import com.rmit.trading_backend.sale.service.SaleDetailService;

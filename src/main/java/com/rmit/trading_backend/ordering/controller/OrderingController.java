@@ -117,7 +117,7 @@ public class OrderingController {
             orderingService.addNewOrder(orderings);
 
             if (orderings.isEmpty()) {
-                return new ResponseEntity<>(orderings, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(orderings, HttpStatus.OK);
 
