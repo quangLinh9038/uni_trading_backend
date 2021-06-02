@@ -1,6 +1,5 @@
 package com.rmit.trading_backend.inventory.receiving.repository;
 
-import com.rmit.trading_backend.actor.model.Staff;
 import com.rmit.trading_backend.inventory.receiving.model.ReceivedNote;
 import org.springframework.data.jpa.repository.JpaRepository;
 

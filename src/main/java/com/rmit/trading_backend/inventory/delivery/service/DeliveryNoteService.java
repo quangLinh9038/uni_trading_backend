@@ -27,7 +27,7 @@ public class DeliveryNoteService {
 
         SaleInvoice si = deliveryNote.getSaleInvoice();
 
-        if(si != null){
+        if (si != null) {
             Optional<SaleInvoice> saleInvoice = saleInvoiceRepository.findById(si.getId());
 
             if (saleInvoice.isPresent()) {

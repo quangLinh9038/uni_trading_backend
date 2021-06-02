@@ -20,6 +20,7 @@ public class ProductController {
 
     @Autowired
     CategoryRepository categoryRepository;
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -79,6 +80,7 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     // POST list of products
     @PostMapping("/products")
