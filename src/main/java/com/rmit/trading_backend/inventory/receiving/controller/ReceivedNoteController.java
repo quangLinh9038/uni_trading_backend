@@ -73,7 +73,7 @@ public class ReceivedNoteController {
 
     // CREATE A NEW RECEIVED NOTES
     // ADD ONE
-    @PostMapping("/receivedNotes")
+    @PostMapping("/receivedNote")
     public ResponseEntity<ReceivedNote> createReceivedNote(@RequestBody ReceivedNote receivedNote) {
         try {
             receivedNoteServices.createReceivedNotes(receivedNote);

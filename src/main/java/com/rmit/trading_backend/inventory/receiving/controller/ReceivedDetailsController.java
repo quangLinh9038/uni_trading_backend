@@ -49,7 +49,7 @@ public class ReceivedDetailsController {
     }
 
     // ADD NEW RECEIVED DETAILS
-    @PostMapping("/receivedDetails")
+    @PostMapping("/receivedDetail")
     public ResponseEntity<ReceivedDetail> addReceivedDetail(@RequestBody ReceivedDetail receivedDetail) {
         try {
 

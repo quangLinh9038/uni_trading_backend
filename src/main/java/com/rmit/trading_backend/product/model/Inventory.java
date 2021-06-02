@@ -1,4 +1,4 @@
-package com.rmit.trading_backend.inventory;
+package com.rmit.trading_backend.product.model;
 
 import javax.persistence.*;
 

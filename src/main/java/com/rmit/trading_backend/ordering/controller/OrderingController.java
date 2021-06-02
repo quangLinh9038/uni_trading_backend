@@ -27,10 +27,13 @@ public class OrderingController {
 
     @Autowired
     ProviderRepository providerRepository;
+
     @Autowired
     private OrderingRepository orderingRepository;
+
     @Autowired
     private OrderingService orderingService;
+
     @Autowired
     private StaffRepository staffRepository;
 

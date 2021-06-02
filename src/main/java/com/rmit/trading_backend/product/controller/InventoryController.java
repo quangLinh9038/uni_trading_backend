@@ -1,6 +1,8 @@
-package com.rmit.trading_backend.inventory;
+package com.rmit.trading_backend.product.controller;
 
+import com.rmit.trading_backend.product.model.Inventory;
 import com.rmit.trading_backend.product.model.Product;
+import com.rmit.trading_backend.product.repository.InventoryRepository;
 import com.rmit.trading_backend.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
